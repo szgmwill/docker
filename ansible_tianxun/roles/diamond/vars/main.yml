@@ -1,0 +1,5 @@
+diamond_rpm_url: "http://10.31.0.11/software/tianxun/diamond/diamond-3.4.322-0.el6.noarch.rpm"
+diamond_installation_dir: "/etc/diamond"
+diamond_conf_path: "{{ diamond_installation_dir }}/diamond.conf"
+diamond_user: "{{ tianxun_user }}"
+diamond_lock_path: /var/lock/subsys/diamond

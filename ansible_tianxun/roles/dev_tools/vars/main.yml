@@ -1,0 +1,36 @@
+---
+# File:    server/roles/dev_tools/vars/main.yml
+# Purpose: variable declarations for the dev_tools role
+
+dev_tools_epel_release_version: 6-8
+dev_tools_epel_package_name: epel-release-{{ dev_tools_epel_release_version }}.noarch.rpm
+#hosted_rpm_download_path: thirdparty-opensource/installers
+dev_tools_epel_package_url: "{{ artifactory_installers_url }}/{{ dev_tools_epel_package_name }}"
+#hosted_rpm_download_url: "{{ artifactory_url_uk1 }}/{{ hosted_rpm_download_path }}"
+
+devel_packages:
+  - bzip2-devel
+  - db4-devel
+  - gdbm-devel
+  - libcurl-devel
+  - libffi-devel
+  - libpcap-devel
+  - libxml2-devel
+  - libxslt-devel
+  - libyaml-devel
+  - lzo-devel
+  - ncurses-devel
+  - openssl-devel
+  - pcre-devel
+  - readline-devel
+  - sqlite-devel
+  - tk-devel
+  - xz-devel
+  - zeromq-devel
+  - zlib-devel
+
+# has to be a better way of doing this...
+hosted_rpm_packages:
+  - "{{ artifactory_installers_url }}/couchbase/libcouchbase2-core-2.3.2-1.x86_64.rpm"
+  - "{{ artifactory_installers_url }}/couchbase/libcouchbase2-libevent-2.3.2-1.x86_64.rpm"
+  - "{{ artifactory_installers_url }}/couchbase/libcouchbase-devel-2.3.2-1.x86_64.rpm"

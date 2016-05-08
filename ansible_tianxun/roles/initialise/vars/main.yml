@@ -1,0 +1,9 @@
+---
+#  define variables specific to initialise
+
+authorized_keys: authorized_keys
+tianxun_group: "{{ tianxun_user }}"
+tianxun_uid: 1503
+tianxun_gid: 1503
+tianxun_ssh: "{{ tianxun_user_home }}/.ssh"
+tianxun_profile_include_dir: "{{ tianxun_user_home }}/profile_includes"

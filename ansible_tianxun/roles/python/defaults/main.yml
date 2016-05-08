@@ -1,0 +1,6 @@
+---
+# File:    server/roles/python/defaults/main.yml
+# Purpose: default variable declarations for the python role
+
+python_version: 2.7.6
+python_setuptools_version: 3.6

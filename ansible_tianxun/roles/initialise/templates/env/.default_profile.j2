@@ -1,0 +1,77 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2014, Tianxun Ltd. All rights reserved.
+# ------------------------------------------------------------------------
+# This script sets up a standard tianxun CentOS user environment.
+# ------------------------------------------------------------------------
+
+# ----------------------------------------------------------------
+# Check the the parameter $1 is a valid path, if it is not then a
+# warning message will be printed.
+# ----------------------------------------------------------------
+function test_path_variable
+{
+ ls $1 > /dev/null 2>&1
+ if [ $? -eq 1  ];
+ then
+  echo -n "****** WARNING: path specified by < $2 > cannot be found - path = < $1 > ******"
+  echo
+ fi
+}
+
+# --------------------------------------------------------------------
+# Set, test and export the GLOBAL environment
+# --------------------------------------------------------------------
+function set_global_env
+{
+ # SYSTEM
+ IPADDRESS=`/sbin/route -n |grep ^0.0.0.0 |/sbin/ip addr show $(awk '{print $8}')|grep 'inet '|awk '{print $2}'| sed 's/\(.*\).../\1/'`
+ CURRENT_DATE=`date +"%F"`
+
+ # APPS
+ STACK_INSTALL_DIR={{ tianxun_apps }}
+ 
+ # include the environment portion of the bash profile fragments
+ for f in {{ tianxun_user_profile_include_dir }}/.*_env ; do
+   if [ -f $f ];
+   then   
+     . $f
+   fi
+ done
+ 
+ # GIT
+ #GIT_LOCATION=`which git`
+ #GIT_VERSION=`git --version | grep -m 1 -P -o '\d*\.\d*\.\d*'`
+
+ # EXPORT PATHS
+ export PATH
+}
+
+# ---------------------------------------------------------------------
+# Show a welcome message with some default server details
+# ---------------------------------------------------------------------
+show_welcome()
+{
+ echo "======================================================================="
+ echo " Server:" `hostname` "("$IPADDRESS")"
+ echo "-----------------------------------------------------------------------"
+ echo " CURRENT_DATE:   " $CURRENT_DATE
+ echo " HOME:           " $HOME
+ # include the environment portion of the bash profile fragments
+ for f in {{ tianxun_user_profile_include_dir }}/.*_show ; do
+   if [ -f $f ];
+   then
+     . $f
+   fi
+ done
+# echo " ---"
+# echo " GIT_LOCATION:   " $GIT_LOCATION
+# echo " GIT_VERSION:    " $GIT_VERSION
+ echo "======================================================================="
+}
+
+# ---------------------------------------------------------------------
+# main
+# ---------------------------------------------------------------------
+set_global_env
+shopt -s expand_aliases
+show_welcome

@@ -1,0 +1,16 @@
+; Supervisor configuration to define how to run and maintain the {{ app_name }} application.
+{% if item.app_supervisor_program == app_secondary_supervisor_program %}
+; The application defined in this file acts a secondary (failover) application which will be used when the
+; primary application is being updated.
+; This app is defined in a separate file to allow us to reload gracefully config for the primary and secondary
+; independently of each other.
+{% endif %}
+[program:{{ item.app_supervisor_program }}]
+directory = {{ app_install_dir }}/app/static
+autostart = true
+autorestart = unexpected
+stdout_logfile = {{ app_uwsgi_log_dir }}/{{ app_name }}.log
+redirect_stderr = true
+command = {{ app_uwsgi_bin_file }} --ini {{ item.app_uwsgi_ini_file }}
+stopsignal = HUP
+killasgroup = true

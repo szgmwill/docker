@@ -1,0 +1,56 @@
+---
+# Sample playbook containing useful tasks to use with nginx
+# NOTE: this playbook is not executed along when using the nginx role
+
+tasks:
+
+# start nginx as a service - and specify it should start on (re)boot with default runlevels
+- name: start nginx service
+  service: name=nginx state=started enabled=yes
+  tags:
+    - nginx_start
+
+# stop nginx service
+- name: stop nginx service
+  service: name=nginx state=stopped
+  tags:
+    - nginx_stop
+
+# update config (if changed) and reload nginx service (if required)
+- name: copy nginx config file to nginx config dir
+  copy: src={{ nginx_config_file }} dest={{ nginx_config_dir }}
+  notify:
+  - reload nginx
+  tags:
+    - nginx_reload
+
+# downgrade to a specific version of nginx
+# TBD - too risky to automate?? - and no ansible support out the box!
+
+# erase a specific version of nginx as defined in vars/
+- name: erase an explicit version of nginx 
+  yum: name=nginx-{{ nginx_version }} state=absent
+  when: (nginx_version)
+  tags:
+    - nginx_uninstall
+
+# erase nginx from a file path or url defined in vars/
+- name: erase an explicit version of nginx
+  yum: name={{ nginx_installer_path }} state=absent
+  when: (nginx_installer_path)
+  tags:
+    - nginx_uninstall
+
+# fallback and erase nginx if no explicit versions or installers have been provided
+- name: erase nginx 
+  yum: name=nginx state=absent
+  when: (not nginx_version) and (not nginx_installer_path)
+  tags:
+    - nginx_uninstall
+
+handlers:
+
+# reload nginx service
+- name: reload nginx
+  service: name=nginx state=reloaded
+

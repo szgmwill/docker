@@ -1,0 +1,10 @@
+{# file to be included into the default bash profile #}
+ # SUPERVISOR
+ export SUPERVISOR_HOME={{ tianxun_supervisor_dir }}
+ export SUPERVISOR_CONFIG={{ supervisor_config_dir }}/supervisord.conf
+ export SUPERVISOR_LOGS={{ supervisor_logs }}
+
+ alias supervisor_log='less $SUPERVISOR_LOGS/supervisor.log'
+ alias supervisor_startup='{{ supervisord_bin }} -c $SUPERVISOR_CONFIG'
+ alias supervisor_shutdown='{{ supervisorctl_bin }} -c $SUPERVISOR_CONFIG shutdown'
+ alias supervisor='{{ supervisorctl_bin }} -c $SUPERVISOR_CONFIG'

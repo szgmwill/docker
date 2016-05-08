@@ -1,0 +1,23 @@
+---
+# define variables specific to the installation of Supervisor
+
+# install Supervisor
+#python_bin_dir: "{{ tianxun_python_dir }}/{{ tianxun_user }}-python/bin"
+elementree_package_name: elementtree-1.2.6-20050316.tar.gz
+meld3_package_name: meld3-0.6.5.tar.gz
+supervisor_package_name: supervisor-3.0.tar.gz
+#package_donwload_path: thirdparty-opensource/installers
+package_download_url: "{{ artifactory_installers_url }}/supervisor"
+# run Supervisor
+supervisor_python_bin: "{{ tianxun_python_dir }}/python-{{ supervisor_python_version }}/bin"
+supervisor_logs: "{{ tianxun_logs }}/supervisor"
+supervisor_log_name: supervisor.log
+supervisor_config_dir: "{{ tianxun_supervisor_dir }}/config"
+supervisor_config_file: supervisord.conf
+supervisor_app_configs_dir: "{{ supervisor_config_dir }}/appconfigs"
+supervisord_bin: "{{ supervisor_python_bin }}/supervisord"
+supervisorctl_bin: "{{ supervisor_python_bin }}/supervisorctl"
+supervisor_pid_path: "{{ tianxun_supervisor_dir }}/supervisord.pid"
+supervisor_socket_path: "{{ tianxun_supervisor_dir }}/supervisor.sock"
+supervisor_init_script: supervisord
+

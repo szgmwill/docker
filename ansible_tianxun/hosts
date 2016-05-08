@@ -1,0 +1,7 @@
+# File:    hosts
+# Purpose: environment inventory file for Dr. Jekyll's web app
+
+[prod]
+# Hostnames or ip addresses for prod servers
+10.31.9.31
+10.31.9.32

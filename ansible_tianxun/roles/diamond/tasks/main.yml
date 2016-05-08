@@ -1,0 +1,47 @@
+---
+- name: install diamond
+  yum: name={{ diamond_rpm_url }}
+  sudo: True
+
+- name: Stop Diamond (if it's running)
+  sudo: True
+  service: name=diamond state=stopped
+
+- name: Check if lock file still exists
+  stat: path={{ diamond_lock_path }}
+  register: diamond_lock
+
+- name: Remove Diamond lock file if it exists (this isn't done automatically)
+  sudo: True
+  command: "rm {{ diamond_lock_path }}"
+  when: diamond_lock.stat.exists
+
+- name: Install pip package from yum
+  yum: name={{ item }} state=present
+  with_items:
+  - python-pip
+  - python-setuptools
+  sudo: True
+
+- pip: name=requests
+  sudo: True
+
+- name: Copy templated configuration file
+  sudo: True
+  template: src=diamond.conf dest={{ diamond_conf_path }} owner={{ diamond_user }} group={{ diamond_user }}
+
+- name: Adding custom collector configuration files.
+  sudo: True
+  copy: src=CustomHttpCollector.conf dest=/etc/diamond/collectors/ owner={{ diamond_user }} group={{ diamond_user }}
+
+- name: Adding custom collectors.
+  sudo: True
+  copy: src=CustomHttpCollector.py dest=/usr/share/diamond/collectors/ owner={{ diamond_user }} group={{ diamond_user }}
+
+- name: add Diamond as a service
+  sudo: True
+  command: "chkconfig --add diamond"
+
+- name: Set Diamond to start and run on boot
+  sudo: True
+  service: name=diamond enabled=yes state=restarted

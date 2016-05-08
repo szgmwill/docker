@@ -1,0 +1,69 @@
+---
+# File:    server/roles/nginx/tasks/main.yml
+# Purpose: playbook to install nginx
+
+- name: install the nginx rpm from artifactory URL
+  yum: name={{ nginx_download_url }} state=present
+  tags:
+    - nginx
+
+# install nginx config - keep config file locally for basic POC
+- name: copy nginx config file to nginx config dir
+  copy: src={{ nginx_config_file }} dest={{ nginx_config_dir }}/default.conf
+  tags:
+    - nginx
+
+# start nginx as a service - and specify it should start on (re)boot with default runlevels
+- name: start nginx service
+  service: name=nginx state=started enabled=yes
+  tags:
+    - nginx
+    
+# RES-1054 - apply a custom SELinux policy to fix nginx shared socket issues on CentOS 6.6+
+#
+# Force the cat command's stderr to stdout when the target file doesn't exist and then pipe it all
+#  to grep for more processing
+# grep will return an exit code of 1 if no match is made which will fail the task - don't really want
+#  to use the native Ansible ignore_errors option as that seems a bit messy, so instead, if grep cannot
+#  find a match for the search string, force an exit code of 0 anyway (|| true).
+- name: find CentOS version
+  shell: /bin/cat {{ nginx_centos_release_file_path }} 2>&1 | grep -oP '\d+\.\d+' || true
+  register: nginx_centos_release_version
+  tags:
+    - nginx
+    - nginx_selinux_policy_update
+
+# Couldn't get the inbuilt version_compare (http://docs.ansible.com/playbooks_variables.html#version-comparison-filters) filter
+#  to work nicely with the indeterministic input values, but using the '>' operator directly in the conditional statement
+#  seemed to work just as well during testing
+- name: determine if policy update required
+  shell: /usr/sbin/semodule -l | grep -i nginx || true
+  when: nginx_centos_release_version is defined and nginx_centos_release_version.stdout > '6.5'
+  register: nginx_selinux_policy_applied
+  sudo: yes
+  tags:
+    - nginx
+    - nginx_selinux_policy_update
+    
+- name: copy new nginx SELinux policy to target
+  unarchive: src=nginx.zip dest={{ tianxun_user_home }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  when: nginx_selinux_policy_applied is defined and nginx_selinux_policy_applied.stdout == ''
+  register: nginx_apply_policy_change
+  tags:
+    - nginx
+    - nginx_selinux_policy_update
+    
+- name: apply SELinux nginx policy fix
+  command: /usr/sbin/semodule -i {{ nginx_selinux_module_filename }} chdir={{ tianxun_user_home }}
+  when: nginx_apply_policy_change.changed
+  sudo: yes
+  tags:
+    - nginx
+    - nginx_selinux_policy_update
+
+- name: clean-up SELinux policy file
+  file: path={{ tianxun_user_home }}/{{ nginx_selinux_module_filename }} state=absent
+  sudo: yes
+  tags:
+   - nginx
+   - nginx_selinux_policy_update

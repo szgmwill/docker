@@ -1,0 +1,8 @@
+---
+# File:    roles/supervisor/tasks/SupervisorRestart.yml
+# Purpose: re-useable task to restart a running Supervisord instance - task can be included in task files for other roles
+
+- include: SupervisorShutdown.yml
+
+- include: SupervisorStartup.yml
+    

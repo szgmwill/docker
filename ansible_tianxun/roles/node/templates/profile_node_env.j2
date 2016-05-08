@@ -1,0 +1,9 @@
+{# file to be included into the default bash profile #}
+ # NODE
+ NODE_HOME={{ node_link_path }}
+ export NODE_ROOT={{ tianxun_node_dir }}
+ 
+ PATH=$PATH:$NODE_HOME/bin
+ 
+ NODE_LOCATION=`which node`
+ NODE_VERSION=`node --version 2>&1 | grep -m 1 -P -o '\d*\.\d*\.\d*'`

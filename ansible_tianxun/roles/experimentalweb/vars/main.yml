@@ -1,0 +1,57 @@
+---
+# File:    roles/helloworld/vars/main.yml
+# Purpose: variable declarations for the helloworld role
+# Notes:
+#          - Name spacing: During any single play, Ansible reads in all variable declarations with a global scope. Variable declarations follow
+#                          an order of precedence (http://docs.ansible.com/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable).
+#                          When variables have the same precedence, the last declaration of a variable will set the value. To prevent any accidental
+#                          variable overwrites it would be a recommendation to add a unique and consistent prefix to all variable declarations for a role,
+#                          e.g. for the helloworld role (which is installing an example web app) the 'app_' prefix has been picked. Prefixing all
+#                          helloworld role variables with 'app_' effectively 'namespaces' them. Two immediate benefits of the 'namespace' approach are
+#                          a prevention of accidental variable overwrites and the ability to easily identify variable context within an Ansible script.
+
+# application
+app_name: experimental-web
+app_package_name: "{{ app_name }}-{{ build_number }}.tgz"
+app_package_download_url: "{{ artifactory_installers_url }}/app/{{ app_package_name }}"
+app_virtualenv_name: venv
+app_root_dir: "{{ tianxun_root }}/{{ app_name }}"
+app_log_dir: "{{ tianxun_logs }}/{{ app_name }}"
+app_config_dir: "{{ app_root_dir }}/conf"
+app_install_dir: "{{ app_root_dir }}/{{ app_name }}-{{ build_number }}"
+app_env_config_file: "{{ app_install_dir }}/config/app/default.py"
+app_venv_path: "{{ app_install_dir }}/{{ app_virtualenv_name }}"
+app_venv_bin_path: "{{ app_install_dir }}/{{ app_virtualenv_name }}/bin"
+app_venv_requirements_first_filename: requirements_first.txt
+app_venv_requirements_second_filename: requirements_second.txt
+app_venv_requirements_first_file: "{{ app_install_dir }}/{{ app_venv_requirements_first_filename }}"
+app_venv_requirements_second_file: "{{ app_install_dir }}/{{ app_venv_requirements_second_filename }}"
+
+# app environment variables
+app_environment_vars:
+  PYCURL_SSL_LIBRARY: nss
+
+# nginx
+app_nginx_config_dest: /etc/nginx/conf.d
+app_nginx_conf_file: /etc/nginx/nginx.conf
+app_nginx_config_dir: "{{ app_config_dir }}/nginx"
+app_nginx_config_filename: nginx_{{ app_name }}.conf
+app_nginx_config_file: "{{ app_nginx_config_dir }}/{{ app_nginx_config_filename }}"
+app_nginx_policy_file: "{{ app_install_dir }}/config/nginx.pp"
+
+#uwsgi
+# TODO: put these into primary and secondary lists to make the template tasks neater
+app_uwsgi_log_dir: "{{ tianxun_logs }}/uwsgi"
+app_uwsgi_bin_file: "{{ app_venv_bin_path }}/uwsgi"
+app_uwsgi_config_dir: "{{ app_config_dir }}/uwsgi"
+app_primary_uwsgi_ini_file: "{{ app_uwsgi_config_dir }}/{{ app_name }}.ini"
+app_secondary_uwsgi_ini_file: "{{ app_uwsgi_config_dir }}/{{ app_name }}_secondary.ini"
+app_primary_uwsgi_sock_filename: app_uwsgi.sock
+app_primary_uwsgi_pid_filename: uwsgi.pid
+app_secondary_uwsgi_sock_filename: app_uwsgi_secondary.sock
+app_secondary_uwsgi_pid_filename: uwsgi_secondary.pid
+
+# supervisor
+app_supervisor_config_dir: "{{ app_config_dir }}/supervisor"
+app_primary_supervisor_program: "{{ app_name }}"
+app_secondary_supervisor_program: "{{ app_name }}_secondary"

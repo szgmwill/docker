@@ -1,0 +1,11 @@
+---
+# File:    roles/supervisor/handlers/main.yml
+# Purpose: Handlers for Supervisor
+
+# includes
+
+# handlers
+- name: start Supervisor
+  command: "{{ supervisord_bin }} -c {{ supervisor_config_dir }}/supervisord.conf creates={{ supervisor_pid_path }}"
+  tags:
+   - supervisor

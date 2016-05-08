@@ -1,0 +1,13 @@
+---
+# File:    server/roles/python/defaults/main.yml
+# Purpose: variable declarations for the python role
+
+# Python-2.7.7.tgz
+# Use Source code to Install
+python_package_prefix: Python-
+python_package_suffix: .tgz
+python_download_url: "{{ artifactory_installers_url }}/python"
+setuptools_package_name: setuptools-{{ python_setuptools_version }}.tar.gz
+setuptools_download_url: "{{ python_download_url }}/setuptools/{{ setuptools_package_name }}"
+python_install_dir: "{{ tianxun_python_dir }}/python-{{ python_version }}"
+python_bin_dir: "{{ tianxun_python_dir }}/python-{{ python_version }}/bin"

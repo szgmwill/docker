@@ -1,0 +1,327 @@
+---
+# File:    roles/helloworld/tasks/installation.yml
+# Purpose: tasks to take an unpacked helloworld example web application and perform all the file system activities required 
+#           to activate (install) it
+
+# vars
+# Purpose: Uses the native Ansible Include_vars module (http://docs.ansible.com/include_vars_module.html) to include the variable file
+#           declarations for the Python and Supervisor roles from the Infrastructure Ansible script library into the current play. The benefit of
+#           using the Include_vars module is to eliminate duplicate declarations of variable values; any variable value changes to the infrastructure
+#           Ansible Python or Supervisor roles are immediately passed on without having to search through entire codebases to ensure all duplicate
+#           variable values line-up.
+#          The {{ infra_ansible_roles_dir }} variable is made available implicitly through the .infra-ansible file infrastructure Ansible script
+#           library release process when playbooks are executed via the 'run-playbook' command. The {{ infra_ansible_roles_dir }} variable ensures
+#           any files included from the infrastructure Ansible script library are always from the release version specified in a project's .infra-ansible
+#           file.
+
+# remove by Will
+- include_vars: "{{ item.file }}"
+  with_items:
+    - { file: '../../python/vars/main.yml' }
+    - { file: '../../supervisor/vars/main.yml' }
+  tags:
+    - experimentalweb
+    - app_supervisor_reload_app
+    - app_supervisor_restart_app
+    - app_supervisor_reload_primary_app
+    - app_supervisor_restart_primary_app
+    - app_supervisor_reload_secondary_app
+    - app_supervisor_restart_secondary_app
+
+# tasks
+# Name:    Create virtualenv and install requirements
+# Purpose: Uses the native Ansible Pip module (http://docs.ansible.com/pip_module.html) to create a virtual environment and install the requirements
+#           listed in the helloworld example web application's requirements.txt file.
+#          The Pip module is used to implicitly create the virtual environment: using the Pip module to create a virtual environment removes the need
+#           for an additional, explicit step for virtual environment creation.
+#          When using the Pip module to implicitly create virtual environments it is necessary to use the virtualenv_command parameter to explicitly
+#           point to the file system location of the virtualenv binary version to use, as by default there will be no virtualenv binary available on
+#           the target server's PATH for Ansible to use. If the virtualenv_command parameter is not provided the task will fail.
+#          When creating the virtualenv additional environment variables can be set on the target server using the (commented out, i.e. uncomment)
+#           environment: option (http://docs.ansible.com/playbooks_environment.html). The environment: option will set environment variables for
+#           only for the duration of the executing task, but any actions performed during the task execution will be able to reference the variables.
+- name: Create virtualenv and install requirements (first round)
+  pip: virtualenv={{ app_venv_path }} virtualenv_command={{ python_bin_dir }}/virtualenv requirements={{ app_venv_requirements_first_file }}
+  tags:
+    - experimentalweb
+
+- name: Install requirements in virtualenv (second round)
+  pip: virtualenv={{ app_venv_path }} virtualenv_command={{ python_bin_dir }}/virtualenv requirements={{ app_venv_requirements_second_file }}
+  tags:
+    - experimentalweb
+
+
+# Configs
+# application config
+# Name:    Install environment config
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to create an environment-specific 'default.py'
+#           application configuration file from a common template (roles/helloworld/templates/app/default.py.j2). The environment-specific
+#           contents of default.py are provided by the values defined in the group_vars/appservers variables files from the environment inventory
+#           folders, e.g. int-review/group_vars/appservers
+- name: Install environment config
+  template: src=config/app/default.py.j2 dest={{ app_env_config_file }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - experimentalweb
+    - app_config_env
+
+# nginx config
+# Name:    Search for nginx default config
+# Purpose: Uses the native Ansible Stat module (http://docs.ansible.com/stat_module.html) to look for the presence of the nginx default.conf
+#           file in the /etc/nginx/conf.d/ directory and records the result as a Register variable
+#           (http://docs.ansible.com/playbooks_conditionals.html#register-variables) for later processing.
+- name: Search for nginx default config
+  stat: path="{{ app_nginx_config_dest }}/default.conf"
+  register: app_nginx_default_config_file
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+# name:    Backup existing nginx config
+# Purpose: Uses the native Ansible Command module (http://docs.ansible.com/command_module.html) to rename the default nginx default.conf file - if
+#           it exists - to move it out of scope of nginx so it does not conflict with the application-specific nginx config. This task is mainly
+#           applicable to first-time installs of nginx. The Command module is being used to execute a native system command directly on a target
+#           server the command will fail if no default.conf file exists. A when condition (http://docs.ansible.com/playbooks_conditionals.html#the-when-statement)
+#           is used to evaluate the status of the register variable from the Search for nginx default config task: the task will only execute the
+#           native file system move command if the register variable indicates the default.conf file exists, otherwise Ansible will skip the task.
+#          The sudo: yes option is used as by default the task should be executing under the {{ tianxun_user }} whilst the nginx default.conf
+#           file is owned by the root user. The {{ tianxun_user }} does not have permission to change root-owned files: setting the sudo: option
+#           to yes allows this one operation to be performed with sudo privileges. Without using the sudo: option this task would fail.
+- name: Backup existing nginx config
+  command: /bin/mv {{ app_nginx_config_dest }}/default.conf {{ app_nginx_config_dest }}/default.conf.bak
+  when: app_nginx_default_config_file.stat.exists == true
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+# Name:    Change nginx user in nginx.conf
+# Purpose: Uses the native Ansible Lineinfile module (http://docs.ansible.com/lineinfile_module.html) to update the default nginx.conf file to execute
+#           nginx as the {{ tianxun_user }}, not the default nginx user. Making the nginx user change simplifies the later process for allowing the
+#           nginx service access to the uwsgi socket files which are - by default - owned by the {{ tianxun_user }} user. As a file critical to the
+#           execution of nginx, the Lineinfile module's backup=yes parameter has been set to backup the existing nginx.conf file before any changes are
+#           made. By making a backup of the original file prior to any updates, the original file can be safely restored should any mistakes be made
+#           by the Lineinfile change.
+#          The sudo: yes option is used as by default the task should be executing under the {{ tianxun_user }} whilst the nginx nginx.conf
+#           file is owned by the root user. The {{ tianxun_user }} does not have permission to change root-owned files: setting the sudo: option
+#           to yes allows this one operation to be performed with sudo privileges. Without using the sudo: option this task would fail.
+- name: Change nginx user in nginx.conf
+  lineinfile: dest={{ app_nginx_conf_file }} backup=yes regexp='^user\s+\w+;$' line="user  {{ tianxun_user }};" state=present
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+    - app_config_nginx_user
+
+# Name:    Add nginx config to app config folder
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to add the application-specific nginx config file
+#           for the helloworld example web application to the application config directory.
+- name: Add nginx config to app config folder
+  template: src=nginx/nginx_app.conf.j2 dest={{ app_nginx_config_file }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+# Name:    Symlink latest nginx app config
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to create a symlink from the helloworld example web
+#           application's applicaton-specific nginx config (located in the application config directory) to the nginx conf.d directory where
+#           it can be picked-up by nginx.
+#          The sudo: yes option is used as by default the task should be executing under the {{ tianxun_user }} which does not have permission
+#           to write to root-owned directory locations nor chmod files to root ownership: setting the sudo: option to yes allows this one operation
+#           to be performed with sudo privileges. Without using the sudo: option this task would fail.
+- name: Symlink latest nginx app config
+  file: src={{ app_nginx_config_file }} dest={{ app_nginx_config_dest }}/{{ app_nginx_config_filename }} state=link owner=root group=root
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+# supervisor config
+# Graceful reload of secondary application, copy over secondary app config, and reload using supervisor control
+
+# Name:    Add new supervisor config for secondary app
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to create an application-specific Supervisor
+#           include file for the secondary Supervisor application from a default template shape. Variable values specific to the secondary
+#           application are defined in the vars/main.yml file for the helloworld example web application role and substituted into the configuration
+#           file by the Template module.
+- name: Add new supervisor config for secondary app
+  template: src=supervisor/application.ini.j2 dest={{ app_supervisor_config_dir }}/{{ item.app_supervisor_program }}.ini owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { app_supervisor_program: '{{ app_secondary_supervisor_program }}', app_uwsgi_ini_file: '{{ app_secondary_uwsgi_ini_file }}' }
+  tags:
+    - experimentalweb
+    - app_config_supervisor
+    - app_config_supervisor_secondary
+
+# Name:    Symlink supervisor secondary app config
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to create a symlink from the helloworld example web
+#           application's secondary application Supervisor config file into the application config include directory where the installed
+#           Supervisor expects to find include files. The Supervisor config file is looking for application include files with a .conf file
+#           extension so the symlink is created with a .conf extension regardless of the source file's extension.
+- name: Symlink supervisor secondary app config
+  file: src={{ app_supervisor_config_dir }}/{{ app_secondary_supervisor_program }}.ini dest={{ supervisor_app_configs_dir }}/{{ app_secondary_supervisor_program }}.conf state=link owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - experimentalweb
+    - app_config_supervisor
+    - app_config_supervisor_secondary
+
+# Name:    Add new uwsgi config for secondary app
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to create an application-specific uWSGI .ini
+#           file for the secondary Supervisor application from a default template shape. Variable values specific to the secondary application
+#           are defined in the vars/main.yml file for the helloworld example web application role and substituted into the configuration file
+#           by the Template module.
+- name: Add new uwsgi config for secondary app
+  template: src=uwsgi/application.ini.j2 dest={{ item.app_uwsgi_ini_file }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { app_uwsgi_ini_file: '{{ app_secondary_uwsgi_ini_file }}', app_uwsgi_sock_filename: '{{ app_secondary_uwsgi_sock_filename }}', app_uwsgi_pid_filename: '{{ app_secondary_uwsgi_pid_filename }}' }
+  tags:
+    - experimentalweb
+    - app_config_uwsgi
+    - app_config_uwsgi_secondary
+
+# Name:    Reload secondary app config in supervisor
+# Purpose: Uses the native Ansible Supervisorctl module (http://docs.ansible.com/supervisorctl_module.html) to reread the Supervisor config files
+#           and tries to add the secondary application to Supervisor if it is missing. On a new server buildout the secondary application will be
+#           started immediately by this task.
+- name: Reload secondary app config in supervisor
+  supervisorctl:
+    name: "{{ app_secondary_supervisor_program }}"
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: present
+  tags:
+    - experimentalweb
+    - app_supervisor_reload_app
+    - app_supervisor_restart_app
+    - app_supervisor_reload_secondary_app
+    - app_supervisor_restart_secondary_app
+
+# Name:    Restart secondary app in supervisor
+# Purpose: Uses the native Ansible Supervisorctl module (http://docs.ansible.com/supervisorctl_module.html) to restart the secondary application 
+#           in Supervisor.
+- name: Restart secondary app in supervisor
+  supervisorctl:
+    name: "{{ app_secondary_supervisor_program }}"
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: restarted
+  tags:
+    - experimentalweb
+    - app_supervisor_update_app
+    - app_supervisor_restart_app
+    - app_supervisor_update_secondary_app
+    - app_supervisor_restart_secondary_app
+
+# Graceful reload of primary application, copy over primary app config, and reload using supervisor control
+
+# Name:    Add new supervisor config for primary app
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to create an application-specific Supervisor
+#           include file for the primary Supervisor application from a default template shape. Variable values specific to the primary application
+#           are defined in the vars/main.yml file for the helloworld example web application role and substituted into the configuration file
+#           by the Template module.
+- name: Add new supervisor config for primary app
+  template: src=supervisor/application.ini.j2 dest={{ app_supervisor_config_dir }}/{{ item.app_supervisor_program }}.ini owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { app_supervisor_program: '{{ app_primary_supervisor_program }}', app_uwsgi_ini_file: '{{ app_primary_uwsgi_ini_file }}' }
+  tags:
+    - experimentalweb
+    - app_config_supervisor
+    - app_config_supervisor_primary
+    
+# Name:    Symlink supervisor primary app config
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to create a symlink from the helloworld example web
+#           application's primary application Supervisor config file into the application config include directory where the installed
+#           Supervisor expects to find include files. The Supervisor config file is looking for application include files with a .conf file
+#           extension so the symlink is created with a .conf extension regardless of the source file's extension.
+- name: Symlink supervisor primary app config
+  file: src={{ app_supervisor_config_dir }}/{{ app_primary_supervisor_program }}.ini dest={{ supervisor_app_configs_dir }}/{{ app_primary_supervisor_program }}.conf state=link owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - experimentalweb
+    - app_config_supervisor
+    - app_config_supervisor_primary
+
+# Name:    Add new uwsgi config for primary app
+# Purpose: Uses the native Ansible Template module (http://docs.ansible.com/template_module.html) to create an application-specific uWSGI .ini
+#           file for the secondary Supervisor application from a default template shape. Variable values specific to the secondary application
+#           are defined in the vars/main.yml file for the helloworld example web application role and substituted into the configuration file
+#           by the Template module.
+- name: Add new uwsgi config for primary app
+  template: src=uwsgi/application.ini.j2 dest={{ item.app_uwsgi_ini_file }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { app_uwsgi_ini_file: '{{ app_primary_uwsgi_ini_file }}', app_uwsgi_sock_filename: '{{ app_primary_uwsgi_sock_filename }}', app_uwsgi_pid_filename: '{{ app_primary_uwsgi_pid_filename }}' }
+  tags:
+    - experimentalweb
+    - app_config_uwsgi
+    - app_config_uwsgi_primary
+
+# Name:    Reload primary app config in supervisor
+# Purpose: Uses the native Ansible Supervisorctl module (http://docs.ansible.com/supervisorctl_module.html) to reread the Supervisor config files
+#           and tries to add the primary application to Supervisor if it is missing. On a new server buildout the primary application will be
+#           started immediately by this task.
+- name: Reload primary app config in supervisor
+  supervisorctl:
+    name: "{{ app_primary_supervisor_program }}"
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: present
+  tags:
+    - experimentalweb
+    - app_supervisor_reload_app
+    - app_supervisor_restart_app
+    - app_supervisor_reload_primary_app
+    - app_supervisor_restart_primary_app
+
+# Name:    Restart primary app in supervisor
+# Purpose: Uses the native Ansible Supervisorctl module (http://docs.ansible.com/supervisorctl_module.html) to restart the primary application 
+#           in Supervisor.
+- name: Restart primary app in supervisor
+  supervisorctl:
+    name: "{{ app_primary_supervisor_program }}"
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: restarted
+  tags:
+    - experimentalweb
+    - app_supervisor_update_app
+    - app_supervisor_restart_app
+    - app_supervisor_update_primary_app
+    - app_supervisor_restart_primary_app
+
+# nginx
+# Name:    Reload nginx service
+# Purpose: Uses the native Ansible Service module (http://docs.ansible.com/service_module.html) to perform a graceful reload of the nginx
+#           service. Any new nginx config changes will be picked-up; for a first install this action will also swap the worker process/es
+#           to start running under the tianxun user instead of the default nginx user.
+#          The sudo: yes option is used as by default the task should be executing under the {{ tianxun_user }} which does not have all 
+#           the required permissions to fully manage the nginx service. Setting the sudo: option to yes allows this one task to be
+#           performed with sudo privileges. Without using the sudo: option this task would fail.
+- name: Reload nginx service
+  service: name=nginx state=reloaded enabled=yes
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_nginx_reload
+    
+# cleanup
+# Name:    Find old app deployments
+# Purpose: Uses the native Ansible Shell module (http://docs.ansible.com/shell_module.html) to perform a file listing of old application
+#           install locations on a target server and record the result as register variable (http://docs.ansible.com/playbooks_variables.html#registered-variables).
+#           The native ls command uses directory timestamps to sort the output order newest to oldest descending and then cuts the list
+#           to remove all directory names from the first to the value of {{ app_num_old_versions_to_keep }} inclusive. The older directory
+#           names left in the list are then registered as a new variable.
+- name: Find old app deployments
+  shell: /bin/ls -1t {{ app_root_dir }} | grep -i {{ app_name }} | sed -e '1,{{ app_num_old_versions_to_keep }}d'
+  register: app_old_packages_to_delete
+  tags:
+    - experimentalweb
+    - app_cleanup
+
+# Name:    Cleanup old deployed packages
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to loop (http://docs.ansible.com/playbooks_loops.html)
+#           over a list of old helloworld example web application install directories and delete them.
+- name: Cleanup old deployed packages
+  file: path={{ app_root_dir }}/{{ item }} state=absent
+  with_items: app_old_packages_to_delete.stdout_lines
+  tags:
+    - experimentalweb
+    - app_cleanup
+    

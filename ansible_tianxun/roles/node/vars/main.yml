@@ -1,0 +1,15 @@
+---
+# File:    server/roles/node/vars/main.yml
+# Purpose: variable definitions for the node role
+
+node_version: 0.10.29
+node_install_dir: node-v{{ node_version }}-linux-x64
+node_install_path: "{{ tianxun_node_dir }}/{{ node_install_dir }}"
+node_bin_dir: "{{ node_install_path }}/bin"
+node_link_path: "{{ tianxun_node_dir }}/node"
+node_package_name: node-v{{ node_version }}-linux-x64.tar.gz
+
+node_download_url: "{{ artifactory_installers_url }}/node/{{ node_package_name }}"
+node_module_download_url: "{{ artifactory_installers_url }}/node/modules"
+node_global_packaged_modules:
+  - karma-cli-0.0.4.tgz

@@ -1,0 +1,34 @@
+# Nginx config for Dr. Jekyll's web application. Defines the listen port for each application, socket file and log locations
+
+upstream uwsgi_cluster {
+    server unix:/tmp/{{ app_primary_uwsgi_sock_filename }};
+    server unix:/tmp/{{ app_secondary_uwsgi_sock_filename }} backup;
+}
+
+server {
+  listen         *:80;
+  server_name  app_uwsgi;
+
+  access_log  /var/log/nginx/access_uwsgi.log;
+  error_log   /var/log/nginx/error_uwsgi.log info;
+
+  location / {
+    include      uwsgi_params;
+    uwsgi_pass   uwsgi_cluster;
+    uwsgi_read_timeout 130;
+    uwsgi_buffering off;
+    proxy_buffering off;
+    proxy_read_timeout 130;
+    proxy_ignore_client_abort on;
+    uwsgi_param SCRIPT_NAME /;
+  }
+
+  gzip on;
+  gzip_types text/javascript text/css text/plain application/json application/javascript application/font-sfnt;
+
+  location /nginx_status {
+        # Turn on stats
+        stub_status on;
+        access_log   off;
+  }
+}

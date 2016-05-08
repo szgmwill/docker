@@ -1,0 +1,8 @@
+---
+# File:    roles/supervisor/tasks/SupervisorStopService.yml
+# Purpose: re-useable task which can be included in task files for other roles
+
+# parameterised task which can be used to stop a registered Supervisor process
+- name: stop a Supervisor process < {{ supervisor_process_desc }} > 
+  supervisorctl: name={{ supervisor_process_name }} state=stopped config={{ supervisor_config_dir }}/supervisord.conf supervisorctl_path={{ supervisorctl_bin }}
+    

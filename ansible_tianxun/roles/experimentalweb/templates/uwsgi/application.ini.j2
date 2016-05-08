@@ -1,0 +1,32 @@
+; uWSGI configuration file used to run an application. Virtualenv directory is defined to ensure the application is
+; run within that context. Socket file is also defined to allow communication between nginx and the uWSGI container.
+
+; buffer-size : Note, by default uWSGI allocates a very small buffer (4096 bytes) for the headers of each request. As
+; such to avoid invalid request block sizes we increase the request size to 65535 as suggested by uWSGI best practices
+; to avoid errors such errors.
+{% if item.app_uwsgi_sock_filename == app_secondary_uwsgi_sock_filename %}
+
+; This config defines the running behaviour of the secondary (failover) application. Ultimately the behaviour is
+; identical to the primary.
+{% endif %}
+[uwsgi]
+socket = /tmp/{{ item.app_uwsgi_sock_filename }}
+; gid = nginx
+; uid = nginx
+chdir = {{ app_install_dir }}/
+home = {{ app_install_dir }}/venv
+wsgi-file = {{ app_install_dir }}/manage.py
+callable = app
+master = true
+workers = 5
+reaper
+enable-threads = true
+catch-exceptions = true
+ignore-sigpip= true
+socket-timeout = 60
+reload-mercy = 60
+vacuum = true
+no-orphans = true
+pidfile = /tmp/{{ item.app_uwsgi_pid_filename }}
+buffer-size = 65535
+mime-file = {{ app_install_dir }}/config/app/extra.mime.types

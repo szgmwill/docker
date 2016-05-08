@@ -1,0 +1,53 @@
+---
+# File:    main.yml
+# Purpose: Example playbook to deploy Dr. Jekyll's web application and the full middleware
+#           software stack required to support and run it
+
+- name: experimental application web-admin site full deployment
+  hosts: prod
+  gather_facts: no
+  remote_user: "{{ tianxun_user }}"
+  vars:
+    python_version: 2.7.7
+  roles:
+    #- initialise
+    #- { role: dev_tools, sudo: yes }
+    #- python
+    #- { role: nginx, sudo: yes }
+    #- supervisor
+    - experimentalweb
+    #- { role: node, sudo: yes }
+    #- { role: statsd, app_version: "{{ build_number }}", sudo: yes }
+    #- { role: diamond, tags: [ 'metrics'] }
+
+# 注意:
+# 如果是新机器的初始化(即第一次部署)的话,要全部roles任务都跑,才能初始化好环境
+# 如果是已经初始化好机器环境,后面每次部署应用的话,只需要跑experimentalconfig任务即可
+
+# Notes:   
+#          - The hosts: option is explicitly set to the server group (as defined in the environment inventory files) to be deployed to, rather
+#             than passed in via the --extra-vars command line option. In the context of the example app, this playbook is specifically tailored to
+#             build and deploy to the frontend application servers only; passing in target hosts as extra-vars is an external build step configuration
+#             action which always carries an element of risk. Instead, the inventory file folder groups are used as the environment delimiters and each
+#             environment group folder contains a hosts inventory file which defines the expected target servers for each CD environment.
+#          - sudo: 9/10 software installations are to locations under file system locations owned by the {{ skycanner_user }} which has the correct
+#             permissions to manage the files and apps installed under tianxun/ root directory locations. The only time it is necessary to run roles
+#             with the sudo option set to yes is (as in the case of the dev_tools & nginx roles) when multiple RPM installs are involved or almost all
+#             role tasks involve privileged user actions. In general, roles with tasks which require the occasional privileged user action have the sudo:
+#             option explicitly enabled against the individual task, rather than applying a blanket sudo option against the entire role. The benefit of
+#             allowing the majority of roles and tasks to run as the {{ tianxun_user }} is it allows Ansible to implicitly set ownership permissions
+#             correctly instead of adding explicit chown tasks to fix any permission gaps caused by running a role with the sudo: flag set true.
+#          - The vars: option is used to set the required python_version variable globally across every role in the entire playbook. Setting the
+#             python_version as an explicit variable within the python role declaration would make the variable available globally for a full execution 
+#             of the playbook, but should a subset of tasks be called using tags, the python_version variable would not be set and any dependent tasks
+#             would subsequently fail or execute in indeterministically.
+#
+#
+# Finally: This playbook and the roles it executes are intended to provide an example of how Ansible can be used to provision one or more front-end
+#           application servers across multiple environments. It is also possible to use Ansible to provision the backend (plus other) servers the
+#           front-end servers may rely on to operate correctly. Playbooks can be included into a master play to build an entire environment in a
+#           single action. For example, if the example app were to require an individual Couchbase backend, this playbook could be reanamed to
+#           'appservers.yml' or 'front-end.yml' and a second playbook created (e.g. 'couchbase.yml', 'backend.yml', etc.) to buildout the Couchbase
+#           instances. A new 'main.yml', 'site.yml', etc. master playbook would then include both the 'appserver.yml' and 'couchbase.yml' playbooks
+#           and use them to build a full environment (from inventory file folder groups) in a single play. However, the 'appserver.yml' and
+#           'couchbase.yml' playbooks could also still be run individually as situations demanded.

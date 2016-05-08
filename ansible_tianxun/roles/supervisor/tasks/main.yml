@@ -1,0 +1,105 @@
+---
+# File:    roles/supervisor/tasks/main.yml
+# Purpose: Playbook to install Supervisor
+
+# includes
+#- include_vars: "{{ item.file }}"
+#  with_items:
+#    - { file: '../../python/vars/main.yml' }
+#    - { file: '../../consul_common/vars/main.yml' }
+#  tags:
+#    - supervisor
+
+# for just now, we are going to install Supervisor and its dependencies into the base tianxun Python install, rather than attempt anything with virtualenv
+- name: install Supervisor package and its dependencies
+  pip: executable={{ supervisor_python_bin }}/pip name={{ item.package }} state=present
+  with_items:
+   - { package: '{{ package_download_url }}/{{ elementree_package_name }}' }
+   - { package: '{{ package_download_url }}/{{ meld3_package_name }}' }
+   - { package: '{{ package_download_url }}/{{ supervisor_package_name }}' }
+  tags:
+    - supervisor
+
+- name: ensure Python dir contents are owned by < {{ tianxun_user }} > user
+  file: path={{ tianxun_python_dir }} state=directory recurse=yes  owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - supervisor
+
+- name: create the Supervisor logging location
+  file: path={{ item.path }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: '{{ supervisor_logs }}' }
+  tags:
+    - supervisor
+
+- name: create the Supervisor config locations
+  file: path={{ item.path }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: '{{ supervisor_config_dir }}' }
+    - { path: '{{ supervisor_app_configs_dir }}' }
+  tags:
+    - supervisor
+
+- name: copy the default supervisor config file into the default location
+  template: src={{ item.path }} dest={{ item.dest }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: 'supervisord.conf.j2', dest: '{{ supervisor_config_dir }}/{{ supervisor_config_file }}' }
+  tags:
+    - supervisor
+    - supervisor_config
+
+- name: create bash profile includes
+  template: src={{ item.src }} dest={{ tianxun_user_profile_include_dir }}/{{ item.dest }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { src: 'profile_supervisor_env.j2', dest: '.profile_supervisor_env' }
+    - { src: 'profile_supervisor_show.j2', dest: '.profile_supervisor_show' }
+  tags:
+    - supervisor
+
+# RES-677 - adding an init script for supervisord to restart service on system reboot
+- name: copy supervisord init script to /etc/init.d
+  template: src=init_supervisord.j2 dest=/etc/init.d/{{ supervisor_init_script }} mode=0775 owner=root group=root
+  sudo: yes
+  tags:
+    - supervisor
+    - supervisor_init_file
+
+- name: add supervisord as service to chkconfig
+  command: /sbin/chkconfig {{ item.args }}
+  with_items:
+    - { args: '--add {{ supervisor_init_script }}' }
+    - { args: '{{ supervisor_init_script }} on' }
+  sudo: yes
+  tags:
+    - supervisor
+    - supervisor_init_file
+
+# adding the force chown in here because we want all the supervisor file paths to be owned by the tianxun user prior to starting Supervisor
+- name: ensure Supervisor dir contents are owned by < {{ tianxun_user }} > user
+  file: path={{ tianxun_supervisor_dir }} state=directory recurse=yes  owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - supervisor
+
+# FSA-184 - changed to an explicit startup call as there appeared to problems with the flush handlers command on an INT-CI server
+- include: SupervisorStartup.yml
+  tags:
+    - supervisor
+    - supervisor_startup
+
+# force Supervisor to start - all process config will be loaded in individual files, so we should be able to circumvent any filepath dependency issues
+#- meta: flush_handlers
+#  tags:
+#    - supervisor
+
+#- name: start Supervisor
+#  command: "{{ supervisord_bin }} -c {{ supervisor_config_dir }}/supervisord.conf creates={{ supervisor_pid_path }}"
+#  tags:
+#   - supervisor
+
+# attempt to get confirmation Supervisor has started (by checking for the existence of the .pid file) before continuing
+#  going to wait 10 seconds before checking - setting the timeout to 60 seconds, but don't expect startup to take that long
+#- name: wait for Supervisor to startup before continuing
+#  wait_for: path={{ supervisor_pid_path }} state=present delay=10 timeout=60
+#  register: supervisor_status
+#  tags:
+#   - supervisor

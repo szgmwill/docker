@@ -1,0 +1,22 @@
+---
+# File:    server/roles/nginx/vars/main.yml
+# Purpose: variable declarations for the nginx role
+
+nginx_version: 1.6.0
+nginx_release: 1
+nginx_rpm: "nginx-{{ nginx_version }}-{{ nginx_release }}.el6.ngx.x86_64.rpm"
+nginx_download_path: "{{ artifactory_installers_url }}/nginx"
+nginx_download_url: "{{ nginx_download_path }}/{{ nginx_rpm }}"
+
+# nginx config file - needed in {{ nginx_config_dir }} on the target
+nginx_config_file: default.conf
+
+# nginx config dir on the target
+nginx_config_dir: /etc/nginx/conf.d
+
+# RES-1054 - [Ansible] Update nginx role to fix SELinux policy update breakages
+nginx_centos_release_file_path: /etc/centos-release
+nginx_selinux_module_filename: nginx.pp
+nginx_selinux_module_name: nginx
+
+

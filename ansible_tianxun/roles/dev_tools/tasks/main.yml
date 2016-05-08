@@ -1,0 +1,25 @@
+---
+# File:    server/roles/dev_tools/tasks/main.yml
+# Purpose: tasks to install additional devel software packages required for development servers
+
+- name: install the epel repo
+  yum: name={{ dev_tools_epel_package_url }} state=present
+  tags:
+    - dev_tools
+
+- name: install the "Development tools" package group
+  yum: name="@Development tools" state=present
+  tags:
+    - dev_tools
+
+- name: install additional development packages
+  yum: name={{ item }} state=present
+  with_items: devel_packages
+  tags:
+    - dev_tools
+
+- name: install additional hosted development packages
+  yum: name={{ item }} state=present
+  with_items: hosted_rpm_packages
+  tags:
+    - dev_tools

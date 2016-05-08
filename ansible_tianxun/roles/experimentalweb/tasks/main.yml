@@ -1,0 +1,14 @@
+---
+# File:    roles/helloworld/tasks/main.yml
+# Purpose: a master tasks file which includes the sub-task files required to deploy and install a version of the
+#           helloworld example web application to one or more front-end applications in a CD environment.
+
+# Run the task file to download the deployable application to a front-end app server and prep it for installation
+- include: setup.yml
+  tags:
+    - experimentalweb
+
+# Run the task file to install the deployable application to a front-end app server
+- include: installation.yml
+  tags:
+    - experimentalweb

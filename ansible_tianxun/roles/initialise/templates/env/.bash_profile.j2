@@ -1,0 +1,14 @@
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+source ~/.default_profile
+#{# if there are any more *_profile files to be sourced, they can be wrapped in if statements, dependent on server roles #}

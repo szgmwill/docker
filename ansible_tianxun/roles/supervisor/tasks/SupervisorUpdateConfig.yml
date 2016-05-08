@@ -1,0 +1,7 @@
+---
+# File:    roles/supervisor/tasks/SupervisorUpdateConfig.yml
+# Purpose: re-useable task which can be included in task files for other roles
+
+# update the Supervisor configuration
+- name: update Supervisor config file
+  command: "{{ supervisorctl_bin }} -c {{ supervisor_config_dir }}/supervisord.conf update"

@@ -1,0 +1,11 @@
+---
+# File:    roles/supervisor/tasks/SupervisorStatusCheck.yml
+# Purpose: re-useable task which can be included in task files for other roles
+
+# test for the existence of Supervisor's supervisord.pid file to determine whether Supervisor is running or not
+#  task will fail if the file is not present - for super error-checking purposes the result of the check will be written to a variable
+- name: confirm Supervisor is running by looking for expected .pid file < {{ tianxun_supervisor_dir }}/supervisord.pid >
+  file: path={{ tianxun_supervisor_dir }}/supervisord.pid state=file
+  register: supervisor_status
+  when: supervisor_status is not defined
+    

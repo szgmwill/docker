@@ -1,0 +1,7 @@
+---
+# File:    roles/supervisor/tasks/SupervisorReloadConfig.yml
+# Purpose: re-useable task which can be included in task files for other roles
+
+# reload the Supervisor config files/
+- name: reload Supervisor config
+  command: "{{ supervisorctl_bin }} -c {{ supervisor_config_dir }}/supervisord.conf reload"

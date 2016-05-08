@@ -1,0 +1,172 @@
+{% if app_config_import_os is defined and app_config_import_os == "true" %}
+import os
+
+{% endif %}
+{% for log in app_config_import_logs %}
+from logging import {{ log }} as debug_level
+{% endfor %}
+
+{% if app_config_debug is defined %}
+DEBUG = {{ app_config_debug }}
+
+{% endif %}
+APP_VERSION = "{{ app_config_version }}"
+
+{% if app_config_app_root_dir is defined %}
+# Gets the absolute path for the project's root - only required for local development
+APPLICATION_ROOT_DIR = {{ app_config_app_root_dir }}
+{% endif %}
+
+
+# StatsD Logging configuration
+STATSD_ENABLED = {{ statsd_enabled }}
+STATSD_HOST = "{{ statsd_host }}"
+STATSD_PORT = {{ statsd_port }}
+STATSD_PREFIX = {{ statsd_prefix }}
+STATSD_SAMPLE_RATE = {{ statsd_sample_rate }}
+SECRET_KEY = 'thisisareallybigsecret'
+
+# Feature flag configuration
+FEATUREFLAGS = {
+    "cohorts" : {{ cohorts_enabled }}
+}
+
+# Couchbase configuration
+DB_BUCKET_NAME = 'experiments'
+DB_HOST_NAME = "{{ app_config_db_host_name }}"
+
+
+# LDAP configuration
+LDAP_SCHEMA = 'ldap'
+LDAP_HOST = "{{ ldap_host }}"
+LDAP_PORT = {{ ldap_port }}
+LDAP_DOMAIN = 'corp.skyscanner.local'
+LDAP_SEARCH_BASE = 'OU=Skyscanner,DC=corp,DC=skyscanner,DC=local'
+LDAP_SUCCESS_REDIRECT = 'shared.index'
+LDAP_USE_EMAIL = {{ ldap_use_email }}
+LDAP_LOGIN_TEMPLATE = 'login.html'
+LDAP_LOGIN_VIEW = 'login'
+LDAP_AVATAR_LOCATION = 'app/static/avatars'
+LDAP_INTERNAL_USER = "{{ ldap_internal_user }}"
+
+# External endpoints configuration
+BITLY_HOST = "{{ bitly_host }}"
+BITLY_ACCESS_TOKEN = "{{ bitly_access_token }}"
+
+LOG_CONFIG = {
+    "name": "{{ app_log_config.name }}",
+    "min_log_level": {{ app_log_config.min_log_level }},
+    "FILE_HANDLER": {
+        "location": {{ app_log_config.file_handler.location }},
+        "filename": "{{ app_log_config.file_handler.filename }}",
+        "max_size": {{ app_log_config.file_handler.max_size }},
+        "backups": {{ app_log_config.file_handler.backups }}
+    },
+    "GRAYLOG_HANDLER" : {
+        "host" : "{{ app_graylog_handler.host }}",
+        "port" : {{ app_graylog_handler.port }}
+    }
+}
+
+ANIMATIONS_ENABLED = {{ app_animations_enabled }}
+
+SQUADS = ['Go Android Squad',
+    'B2B Platform Squad',
+    'South Asia 2 Squad',
+    'GAP Squad',
+    'User Satisfaction Squad',
+    'Infrastructure',
+    'Korea Squad',
+    'Hotels Data Squad',
+    'SEO Squad',
+    'Flights Relevance Services Squad',
+    'Car Hire Android App Squad',
+    'Traveller Communication Squad',
+    'Office IT Services Squad',
+    'ATPCO Taxes and Surcharges Services Squad',
+    'South Asia 1 Squad',
+    'APAC Regional Feature Squad',
+    'Flights Android App Squad',
+    'Traveller Onboarding Squad',
+    'Flights Partner Engineering APAC Squad',
+    'Creative Squad',
+    'Inspiration and Discovery Services Squad',
+    'Issue Triage Squad',
+    'Flights Partner Engineering AMER Squad',
+    'Go iOS Squad',
+    'Partner Quality Squad',
+    'Translation Management Squad',
+    'Experimentation Services Squad',
+    'Business Tools Squad',
+    'Partner Engagement Squad',
+    'Car Hire IOS App Squad',
+    'Flights GDS Services Squad',
+    'Mobile App Services Squad',
+    'Home and Search Controls UI Squad',
+    'Data Acquisition Tooling Squad',
+    'Core Data Acquisition Services Squad',
+    'Hotels Partner Engineering Squad',
+    'Cross Sell Squad',
+    'Automated Price Accuracy Squad',
+    'Travel Content Platform Squad',
+    'Hotels Backend Squad',
+    'Hotels Web Front End Squad',
+    'Monitoring Systems Squad',
+    'Web Publishing Engineers Squad',
+    'Social Ads Squad',
+    'Web Publishing Squad',
+    'Flights IOS App Squad',
+    'Stay Android Squad',
+    'North America Country Group Squad',
+    'France Squad',
+    'Data Warehousing Squad',
+    'Travel Hub Client Squad',
+    'Car Hire Partner Engineering Squad',
+    'Establishing Markets Squad',
+    'Flights Pricing Services Squad',
+    'TKG and Search Services Squad',
+    'EMEA Campaign Factory Squad',
+    'Flights Partner Engineering RUN Squad',
+    'Mobile DevOps Squad',
+    'Spain Squad',
+    'Traveller Identity Squad',
+    'Americas Regional Feature Squad',
+    'Flights Trends Services Squad',
+    'Route and Timetable Services Squad',
+    'Commercial Product Innovation Squad',
+    'Flight Search Squad',
+    'Release Engineering Services Squad',
+    'Travel Hub Backend Squad',
+    'Flights Tax and Surcharge Services Squad',
+    'Italy Squad',
+    'Russia Squad',
+    'Inspiration and Discovery Squad',
+    'Logging Services Squad',
+    'Flights Partner Engineering EMEA Squad',
+    'Test Automation Services Squad',
+    'State Machine Squad',
+    'DACH Squad',
+    'Calendar Service Squad',
+    'Travel Analytics Squad',
+    'Stay iOS Squad',
+    'B2B Solutions Squad',
+    'Facilitated Booking Squad',
+    'UK & I Squad',
+    'Greater China Squad',
+    'Oceania Squad',
+    'Car Hire FrontEnd Squad',
+    'Estimated Pricing Services Squad',
+    'Trip Gun Squad',
+    'Japan Squad',
+    'Paid Media Squad',
+    'South America Country Group Squad',
+    'Security Squad',
+    'Web Application Squad',
+    'Internationalisation and Localisation Squad',
+    'Tracking Services and Revenue Reporting Squad',
+    'Car Hire BackEnd Squad',
+    'Travel Alerts Squad',
+    'Revenue Estimation and Reconciliation Squad',
+    'Tianxun Webservice Squad',
+    'Tianxun Platform Squad',
+    'Tianxun Mobile App Squad']

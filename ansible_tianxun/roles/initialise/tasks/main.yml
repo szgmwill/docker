@@ -1,0 +1,31 @@
+---
+# File:    server/roles/initialise/tasks/main.yml
+# Purpose: update the environment for the tianxun user  
+
+- name: create empty directories under the {{ tianxun_user }} user home dir
+  file: path={{ item.path }} state=directory owner={{ tianxun_user }} group={{ tianxun_user }}
+  with_items:
+    - { path: '{{ tianxun_user_profile_include_dir }}' }
+  tags:
+    - initialise
+
+- name: extend the existing .bash_profile for the tianxun_user
+  template: src={{ item.path }} dest={{ item.dest }} owner={{ tianxun_user }} group={{ tianxun_user }}
+  with_items:
+    - { path: 'env/.bash_profile.j2', dest: '{{ tianxun_user_home }}/.bash_profile' }
+    - { path: 'env/.default_profile.j2', dest: '{{ tianxun_user_home }}/.default_profile' }
+  tags:
+    - initialise
+    - user_profile
+
+- name: recursively set ownership and group of tianxun root directories
+  file: path={{ item.path }} owner={{ tianxun_user }} group={{ tianxun_group }} recurse={{ item.recurse }} state=directory
+  with_items:
+    - { path: '{{ tianxun_root }}', recurse: 'no' }
+    - { path: '{{ tianxun_home }}', recurse: 'no' }
+    - { path: '{{ tianxun_user_home }}', recurse: 'yes' }
+    - { path: '{{ tianxun_logs }}', recurse: 'yes' }
+    - { path: '{{ tianxun_download_dir }}', recurse: 'yes' }
+  sudo: yes
+  tags:
+    - initialise

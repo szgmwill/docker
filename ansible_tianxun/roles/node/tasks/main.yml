@@ -1,0 +1,51 @@
+---
+# File:    server/roles/node/tasks/main.yml
+# Purpose: the tasks required to install and configure Node.js
+
+# tasks
+- name: download the Node archive
+  get_url: url={{ node_download_url }} dest={{ tianxun_user_home }}/{{ node_package_name }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - node
+
+- name: create the Node unpack location
+  file: path={{ tianxun_node_dir }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - node
+
+- name: unpack the Node archive
+  command: /bin/tar zxvf {{ tianxun_user_home }}/{{ node_package_name }} chdir="{{ tianxun_node_dir }}"
+  tags:
+    - node
+
+- name: validate the file ownership of the unpacked Node archive
+  file: path={{ tianxun_node_dir }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }} recurse=yes
+  tags:
+    - node
+
+- name: setup generic Node symlink
+  file: src={{ item.path }} dest={{ item.dest }} state=link owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: '{{ node_install_path }}', dest: '{{ node_link_path }}' }
+  tags:
+    - node
+    - node_generic_symlink
+
+- name: install global node packaged modules
+  command: "{{ node_bin_dir }}/npm install -g {{ node_module_download_url }}/{{ item }} chdir={{ node_install_path }}"
+  with_items: node_global_packaged_modules
+  tags:
+    - node
+    - node_global_packaged_modules
+
+- name: clean-up the downloaded Node archive
+  file: path={{ tianxun_user_home }}/{{ node_package_name }} state=absent
+  tags:
+    - node
+
+- name: copy bash profile include file to includes directory
+  template: src={{ item.path }} dest={{ tianxun_user_profile_include_dir }}/{{ item.dest }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: 'profile_node_env.j2', dest: '.profile_node_env' }
+  tags:
+    - node

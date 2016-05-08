@@ -1,0 +1,13 @@
+---
+# File:    roles/supervisor/tasks/SupervisorShutdown.yml
+# Purpose: re-useable task to shutdown a running Supervisord instance - task can be included in task files for other roles
+
+# parameterised task which can be used to shutdown the Supervisord application (i.e. Supervisor itself and not a managed application / group)
+- name: shutdown Supervisor
+  service: name=supervisord state=stopped enabled=yes
+  sudo: yes
+
+# wait for  the supervisord pid file to be removed to confirm Supervisor has successfully exited, task will fail after 300 seconds (default timeout) if the pid file is still present
+- name: wait for Supervisor to shutdown
+  wait_for: path={{ supervisor_pid_path }} state=absent delay=10
+    

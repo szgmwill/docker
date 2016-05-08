@@ -1,0 +1,70 @@
+---
+# File:    roles/statsd/tasks/main.yml
+# Purpose: playbook to set up statsd
+
+#add by Will
+- include_vars: "{{ item.file }}"
+  with_items:
+    - { file: '../../experimentalweb/vars/main.yml' }
+    - { file: '../../supervisor/vars/main.yml' }
+
+- name: Register variable to check statsd path
+  stat: path="{{ app_statsd_dir }}"
+  register: statsd_path
+
+- name: Clone statsd
+  shell: >
+         cd {{ tianxun_root }} && git clone {{ statsd_repo }}
+  ignore_errors: yes
+  sudo: True
+  tags:
+    - statsd
+  when: statsd_path.stat.exists == false
+
+
+# Insert the build and node version number into the configuration files
+
+- name: Set config to include build version
+  shell: >
+         sed -i s/{version}/'{{ build_number }}'/g {{ app_statsd_config_dir }}statsd.ini && sed -i s/{node_version}/'{{ node_version }}'/g {{ app_statsd_config_dir }}statsd.ini
+
+- name: Set config to include build version v2
+  shell: >
+         sed -i 's={app_statsd_dir}={{ app_statsd_dir }}=g' {{ app_statsd_config_dir }}statsd.ini && sed -i 's={app_statsd_config_dir}={{ app_statsd_config_dir }}=g' {{ app_statsd_config_dir }}statsd.ini
+
+# Change the graphite end point for the correct environment
+
+- name: Set config to use the correct graphite host
+  shell: >
+         sed -i 's/{graphite_host}/{{ graphite_host }}/g' {{ app_statsd_config_dir }}{{ statsd_config }}
+
+- name: Set config to use the correct graphite port
+  shell: >
+         sed -i 's/{graphite_port}/{{ graphite_port }}/g' {{ app_statsd_config_dir }}{{ statsd_config }}
+
+- name: Set config to use the correct data center value
+  shell: >
+         sed -i s/{data_center}/{{ data_center }}/g {{ app_statsd_config_dir }}{{ statsd_config }}
+
+
+- name: Set config to use the correct machine name value
+  shell: >
+         myhost=$(hostname -s) && sed -i s/{machine}/$myhost/g {{ app_statsd_config_dir }}/{{ statsd_config }}
+
+- name: Symlink statsd inf config
+  file: src={{ app_statsd_config_dir }}/statsd.ini dest={{ supervisor_app_configs_dir }}/statsd.conf state=link owner={{ tianxun_user }} group={{ tianxun_group }}
+
+
+- name: Reload statsd config in supervisor
+  supervisorctl:
+    name: statsd
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: present
+
+- name: Restart statsd app in supervisor
+  supervisorctl:
+    name: statsd
+    supervisorctl_path: "{{ supervisorctl_bin }}"
+    config: "{{ supervisor_config_dir }}/supervisord.conf"
+    state: restarted

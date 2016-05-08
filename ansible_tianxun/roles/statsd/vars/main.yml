@@ -1,0 +1,19 @@
+---
+# File:    roles/statsd/vars/main.yml
+
+#node
+
+node_version: 0.10.29
+node_install_dir: node-v{{ node_version }}-linux-x64
+node_install_path: "{{ tianxun_node_dir }}/{{ node_install_dir }}"
+node_bin_dir: "{{ node_install_path }}/bin"
+
+#statsd repo
+
+statsd_repo: https://github.com/etsy/statsd.git
+statsd_config: statsdConfig.js
+statsd_ini: statsd.ini
+
+# statsd
+app_statsd_dir: "{{ tianxun_root }}/statsd"
+app_statsd_config_dir: "{{ app_install_dir }}/config/app/"

@@ -1,0 +1,130 @@
+---
+# File:    roles/helloworld/tasks/setup.yml
+# Purpose: tasks to download and unpack a version of the helloworld example web application ready for service activation (installation)
+
+- name: Debug
+  debug:
+    var=ansible_version
+  tags:
+    - experimentalweb
+
+# tasks
+# Name:    Clean app install destination for dev
+# Purpose: Use the native Ansible File module (http://docs.ansible.com/file_module.html) to explicitly delete the application install directory
+#           to ensure a clean re-install. This stage is only required for development testing when locally used deployable packages are not
+#           incrementing their build_number values between installs and their is a desire for a clean install. Otherwise it is safe to disable
+#           this task via the app_dev_cleanup_install_dir variable.
+#          The conditional 'when' statement (http://docs.ansible.com/playbooks_conditionals.html#the-when-statement) is used to determine whether
+#           the task should execute or not, as it is only meant to support local development efforts and not for CD environment deployments.
+#          Warning: when enabled, this task will cause any running application to break as it will delete the running web app and its virtualenv.
+- name: Clean app install destination for dev
+  file: path={{ app_install_dir }} state=absent
+  when: app_dev_environment is defined and app_dev_environment == true and app_dev_cleanup_install_dir is defined and app_dev_cleanup_install_dir == true
+  tags:
+    - helloworld
+    - app_dev_clean_install_dest
+# Name:    Create application dir structure
+# Purpose: Use the native Ansible File module (http://docs.ansible.com/file_module.html) and loop (http://docs.ansible.com/playbooks_loops.html)
+#           over a series of file paths (declared as variables in helloworld/vars/main.yml) to create the empty directory structure on the
+#           target file system required to support the web application.
+- name: Create application dir structure
+  file: path={{ item.path }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items:
+    - { path: '{{ app_install_dir }}' }
+    - { path: '{{ app_config_dir }}' }
+    - { path: '{{ app_log_dir }}' }
+    - { path: '{{ app_nginx_config_dir }}' }
+    - { path: '{{ app_supervisor_config_dir }}' }
+    - { path: '{{ app_uwsgi_config_dir }}' }
+    - { path: '{{ app_uwsgi_log_dir }}' }
+    - { path: '{{ app_statsd_dir }}' }
+  tags:
+    - experimentalweb
+
+# Name:    Copy application archive for local dev
+# Purpose: Uses the native Ansible Copy module (http://docs.ansible.com/copy_module.html) to copy a locally produced deployable application package
+#           archive from a mounted shared location on the development VM to the target development VM.
+#          The conditional 'when' statement (http://docs.ansible.com/playbooks_conditionals.html#the-when-statement) is used to determine whether
+#           the task should execute or not, as it is only meant to support local development efforts and not for CD environment deployments.
+- name: Copy application archive for local dev
+  copy: src={{ app_dev_package_path }} dest={{ tianxun_user_home }}/{{ app_package_name }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  when: app_dev_environment is defined and app_dev_environment == true
+  tags:
+    - experimentalweb
+
+# Name:    Download application archive
+# Purpose: Uses the native Ansible Get_url module (http://docs.ansible.com/get_url_module.html) to download the deployable application package
+#           archive directly to a target server.
+#          The conditional 'when' statement (http://docs.ansible.com/playbooks_conditionals.html#the-when-statement) is used to determine whether
+#           the task should execute or not, as whilst downloading deployable artifacts from Artifactory is not always suitable for local development
+#           vagrant environments, it is the expected norm for deploying to CD environments from TeamCity.
+- name: Download application archive
+  get_url: url={{ app_package_download_url }} dest={{ tianxun_user_home }}/{{ app_package_name }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  when: app_dev_environment is not defined or app_dev_environment != true
+  tags:
+    - experimentalweb
+
+# Name:    Unpack archive contents
+# Purpose: Use the native Ansible Unarchive module (http://docs.ansible.com/unarchive_module.html) to unpack the downloaded helloworld
+#           example web application to its intended install location. By default, the Unarchive module will look for an archive file
+#           on the host machine where Ansible is executing (e.g. TeamCity agent) and copy the unpacked contents to the target server.
+#          By adding the 'copy=no' parameter to the Unarchive module call the task will look for the source archive locally on the
+#           target server instead of the Ansible host machine.
+- name: Unpack archive contents
+  unarchive: src={{ tianxun_user_home }}/{{ app_package_name }} dest={{ app_install_dir }} copy=no
+  tags:
+    - experimentalweb
+
+# Name:    Enforce application file ownership
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to recursively chown all files and directories
+#           from the unpacked helloworld example web app to the {{ tianxun_user }}. If the helloworld role is run as the {{ tianxun_user }},
+#           i.e. without setting the sudo: flag to yes / true, file ownership will be implicitly set correctly. The purpose of this task
+#           is to protect against any situation where the Unpack archive contents task was not run as the {{ tianxun_user }}.
+- name: Enforce application file ownership
+  file: path={{ app_install_dir }} state=directory recurse=yes owner={{ tianxun_user }} group={{ tianxun_group }}
+  tags:
+    - experimentalweb
+
+# Name:    Cleanup downloaded archive
+# Purpose: Uses the native Ansible File module (http://docs.ansible.com/file_module.html) to delete the helloworld example web archive file
+#           downloaded by the Download application archive task.
+- name: Cleanup downloaded archive
+  file: path={{ tianxun_user_home }}/{{ app_package_name }} state=absent
+  tags:
+    - experimentalweb
+
+# Update packages for ldap
+- name: Update python-devel
+  command: yum install -y python-devel
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+- name: Update openldap-devel
+  command: yum install -y openldap-devel
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+- name: Update blas-devel
+  command: yum install -y blas-devel
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+- name: Update lapack-devel
+  command: yum install -y lapack-devel
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx
+
+- name: Update nginx configuration
+  command: semodule -i {{ app_nginx_policy_file }}
+  sudo: yes
+  tags:
+    - experimentalweb
+    - app_config_nginx

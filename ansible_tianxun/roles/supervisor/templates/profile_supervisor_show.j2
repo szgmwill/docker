@@ -1,0 +1,22 @@
+{# file to be included into the default bash profile #}
+ agent_status=`supervisor status 2>&1`
+ if [[ $agent_status == *{{ supervisor_socket_path }}* ]]
+ then
+   agent_state='!!!DOWN!!!'
+ else
+   agent_state='RUNNING'
+ fi
+ echo " ---"
+ echo " SUPERVISOR:"
+ echo " SUPERVISOR STATUS: [ $agent_state ]"
+ echo "  supervisord:   {{ supervisord_bin }}"
+ echo "  supervisorctl: {{ supervisorctl_bin }}"
+ echo "  --"
+ echo "  Aliases"
+ echo "   Supervisor log:      supervisor_log"
+ echo "   Start Supervisor:    supervisor_startup"
+ echo "   Shutdown Supervisor: supervisor_shutdown"
+ echo "   --"
+ echo "   Execute a supervisorctl action: supervisor <action> <option>"
+ echo "   Open supervisorctl console:     supervisor"
+ echo "   See supervisorctl help:         supervisor help"

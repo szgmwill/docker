@@ -1,0 +1,124 @@
+---
+# variables listed here are applicable to all host groups
+
+# =====================================INFX-START=======================================================
+# Ansible Exec User : note that sudo
+tianxun_user: skyadmin
+
+# groups
+tianxun_group: skyadmin
+
+# initialisation
+tianxun_root_dir: skyadmin
+tianxun_root: /opt/{{ tianxun_root_dir }}
+tianxun_logs: /var/log/{{ tianxun_user }}
+tianxun_apps: "{{ tianxun_root }}/stack"
+tianxun_home: /home
+tianxun_user_home: "{{ tianxun_home }}/{{ tianxun_user }}"
+tianxun_user_profile_include_dir: "{{ tianxun_user_home }}/profile_includes"
+
+# middleware app locations
+tianxun_download_dir: "{{ tianxun_root }}/download_cache"
+tianxun_maven_dir: "{{ tianxun_root }}/maven"
+tianxun_node_dir: "{{ tianxun_root }}/node"
+tianxun_python_dir: "{{ tianxun_root }}/python"
+tianxun_supervisor_dir: "{{ tianxun_root }}/supervisor"
+
+#
+# Artifactory
+#artifactory_url_tianxun: http://10.209.100.55:8082/artifactory
+# Aliyun File Download
+artifactory_installers_url: http://10.31.0.11/software/tianxun
+
+
+# Python Version
+python_version: 2.7.7
+
+
+# Infrastructure Ansible for Tianxun
+tianxun_ansible_dir: "{{ tianxun_root }}/ansible"
+tianxun_ansible_virtualenv_dir: "{{ tianxun_ansible_dir }}/venvs"
+infra_ansible_dir: "{{ tianxun_ansible_dir }}/infra-ansible"
+infra_ansible_legacy_version_dir: legacy-support
+infra_ansible_version_file_name: .infra-ansible
+infra_ansible_roles_dir: "{{ infra_ansible_dir }}/{{ infra_ansible_release_version }}/server/roles"
+
+
+# Supervisor setup
+supervisor_python_version: "{{ python_version }}"
+supervisor_enable_web_interface: "true"
+
+
+# statsd
+#app_install_dir:
+app_statsd_dir: "{{ tianxun_root }}/statsd"
+app_statsd_config_dir: "{{ app_statsd_dir }}/config/app/"
+
+# DC
+data_center: 'aliyun'
+
+# =====================================INFX-END=======================================================
+
+
+# =====================================APP-START=======================================================
+
+# cleanup - values here are applied globally, but could be set on a per-environment basis if required,
+# i.e. more aggressive cleanup for int-ci / int-review environments versus pre-prod & prod
+app_num_old_versions_to_keep: 5
+
+
+# Couchbase Server Address
+# use Aliyun SLB
+app_config_db_host_name: '10.31.9.33'
+
+# Application configuration
+app_config_version: "{{ build_number }}"
+
+app_config_import_logs:
+  - INFO
+
+app_log_config:
+  name: experimental-web
+  min_log_level: debug_level
+  file_handler:
+    location: '"{{tianxun_logs}}/experimental-web"'
+    filename: "{{ app_name }}.log"
+    max_size: 200000000
+    backups: 5
+
+app_animations_enabled: True
+
+# Application feature flags
+cohorts_enabled: True
+
+# LDAP configuration
+#ldap_host: '172.20.7.8'
+ldap_host: '10.104.244.51'
+ldap_use_email: True
+ldap_port: 389
+ldap_internal_user: 'svc_jekyll'
+
+# Statsd configuration
+statsd_enabled: True
+statsd_host: 'localhost'
+statsd_port: 8125
+statsd_prefix: None
+statsd_sample_rate: 1
+
+# Graphite configuration (same for int-ci and int-review)
+#graphite_host: 'metrics.int-review.skyscanner.local'
+graphite_host: '10.31.7.56'
+graphite_port: 2013
+
+# External endpoints configuration
+bitly_host: 'https://api-ssl.bitly.com'
+bitly_access_token: 'token'
+
+# GRAYLOG_HANDLER
+app_graylog_handler:
+  host: 'host'
+  port: 12201
+
+# current ENV
+target_env: prod
+# =====================================APP-END=======================================================

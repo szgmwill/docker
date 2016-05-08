@@ -1,0 +1,158 @@
+---
+# File:    server/roles/python/tasks/main.yml
+# Purpose: tasks to install a pre-built set of Python binaries into a fixed filesystem location
+# Usage:   PARAMETERISED ROLE: {{ python_version }} is set to a default value in defaults/main.yml, to override, supply an explicit version via the command line or as a parameter when calling the role
+#          EXAMPLES: Following examples show various methods of calling the scala role from a playbook
+#            - python
+#            - { role: python, python_version: [2.7.2, 2.7.6, 3.4.1] }
+#            - { role: python, python_version: 3.4.1 }
+# tasks
+
+- name: Check if the Python bin directory exists
+  stat: path={{ tianxun_python_dir }}/python-{{ item }}/bin
+  with_items: python_version
+  register: python_install_dir_status
+  tags:
+    - python
+
+- name: download Python
+  get_url: url={{ python_download_url }}/{{ python_package_prefix }}{{ item.1 }}{{ python_package_suffix }} dest={{ tianxun_user_home }}/{{ python_package_prefix }}{{ item.1 }}{{ python_package_suffix }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_indexed_items: python_version
+  when: "{{ always_install_packages | default(true) }} or not python_install_dir_status.results[{{ item.0 }}].stat.exists"
+  tags:
+    - python
+
+# modi by Will
+- name: create the Python Install location
+  file: path={{ tianxun_python_dir }}/python-{{ item }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }}
+  with_items: python_version
+  tags:
+    - python
+
+# modi by Will
+- name: unpack the Python tar package
+  unarchive: src={{ tianxun_user_home }}/{{ python_package_prefix }}{{ item.1 }}{{ python_package_suffix }} dest="{{ tianxun_user_home }}" owner={{ tianxun_user }} group={{ tianxun_group }} copy=no
+  with_indexed_items: python_version
+  when: "{{ always_install_packages | default(true) }} or not python_install_dir_status.results[{{ item.0 }}].stat.exists"
+  tags:
+    - python
+
+# add by Will
+- name: Install Python and set prefix => configure
+  command: sudo ./configure --prefix={{ tianxun_python_dir }}/python-{{ item.1 }} chdir="{{ tianxun_user_home }}/{{ python_package_prefix }}{{ item.1 }}"
+  with_indexed_items: python_version
+  when: "{{ always_install_packages | default(true) }} or not python_install_dir_status.results[{{ item.0 }}].stat.exists"
+  tags:
+    - python
+
+# add by Will
+- name: Install Python and set prefix => make
+  command: sudo make chdir="{{ tianxun_user_home }}/{{ python_package_prefix }}{{ item.1 }}"
+  with_indexed_items: python_version
+  when: "{{ always_install_packages | default(true) }} or not python_install_dir_status.results[{{ item.0 }}].stat.exists"
+  tags:
+    - python
+
+# add by Will
+- name: Install Python and set prefix => make install
+  command: sudo make install chdir="{{ tianxun_user_home }}/{{ python_package_prefix }}{{ item.1 }}"
+  with_indexed_items: python_version
+  when: "{{ always_install_packages | default(true) }} or not python_install_dir_status.results[{{ item.0 }}].stat.exists"
+  tags:
+    - python
+
+- name: validate the file ownership of the Python install directory to improve idempotency
+  file: path={{ tianxun_python_dir }}/python-{{ item.1 }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }} recurse=yes
+  with_indexed_items: python_version
+  sudo: yes
+  tags:
+    - python
+
+- name: Check if the Setuptools bin directory exists
+  stat: path={{ tianxun_python_dir }}/python-{{ item }}/bin/easy_install
+  with_items: python_version
+  register: setuptools_install_dir_status
+  tags:
+    - python
+
+- name: download Setuptools
+  get_url: url={{ setuptools_download_url }} dest={{ tianxun_user_home }}/{{ setuptools_package_name }} owner={{ tianxun_user }} group={{ tianxun_group }}
+  when: "{{ always_install_packages | default(true) }} or not setuptools_install_dir_status.results[{{ item.0 }}].stat.exists"
+  with_indexed_items: python_version
+  tags:
+    - python
+
+- name: unpack the Setuptools archive
+  unarchive: src={{ tianxun_user_home }}/{{ setuptools_package_name }} dest="{{ tianxun_user_home }}" owner={{ tianxun_user }} group={{ tianxun_group }} copy=no creates={{ tianxun_user_home }}/setuptools-{{ python_setuptools_version }}
+  when: "{{ always_install_packages | default(true) }} or not setuptools_install_dir_status.results[{{ item.0 }}].stat.exists"
+  with_indexed_items: python_version
+  tags:
+    - python
+
+#- name: setup generic and user symlinks to the Python install location
+#  file: src={{ item.path }} dest={{ item.dest }} state=link owner={{ tianxun_user }} group={{ tianxun_user }}
+#  with_items:
+#    - { path: '{{ tianxun_python_dir }}/python-{{ python_version }}/', dest: '{{ tianxun_python_dir }}/python' }
+#    - { path: '{{ tianxun_python_dir }}/python', dest: '{{ tianxun_python_dir }}/{{ tianxun_user }}-python' }
+#  tags:
+#    - python
+
+- name: setup a generic < python > symlink to the installed < pythonx.y > binary
+  shell: ln -snf `ls | grep -m 1 -P -o 'python\d*\.\d*'` python chdir={{ tianxun_python_dir }}/python-{{ item }}/bin creates=python
+  with_items: python_version
+  tags:
+    - python
+
+# if there is an easy_install binary in the custom Python bin dir, then skip this step (fairly ignorant test, but it should satisfy requirements until it's proved unfit)
+#  - we only want to do this for Python versions of 2.x or less, Python 3.x ships with easy_install
+- name: install setuptools
+  command: "{{ tianxun_python_dir }}/python-{{ item.1 }}/bin/python setup.py install chdir={{ tianxun_user_home }}/setuptools-{{ python_setuptools_version }} creates={{ tianxun_python_dir }}/python-{{ item.1 }}/bin/easy_install"
+  with_indexed_items: python_version
+  when: "({{ always_install_packages | default(true) }} or not setuptools_install_dir_status.results[{{ item.0 }}].stat.exists) and item.1|int <= 2"
+  tags:
+    - python
+    - python_extensions
+
+# for just now, we will assume a good separation of Python installations, with each install location having an individual easy_install binary available
+#  - we only want to do this for Python versions of 2.x or less, Python 3.x ships with pip
+- name: install pip
+  easy_install: executable={{ tianxun_python_dir }}/python-{{ item }}/bin/easy_install name=pip
+  with_items: python_version
+  when: item[0]|int <= 2
+  tags:
+    - python
+    - python_extensions
+
+# for just now, we will assume a good separation of Python installations, with each install location having an individual pip binary available
+- name: install virtualenv
+  pip: executable={{ tianxun_python_dir }}/python-{{ item }}/bin/pip name=virtualenv state=present
+  with_items: python_version
+  when: item[0]|int <= 2
+  tags:
+    - python
+    - python_extensions
+
+- name: validate the file ownership of the Python install directory to improve idempotency
+  file: path={{ tianxun_python_dir }} state=directory owner={{ tianxun_user }} group={{ tianxun_group }} recurse=yes
+  sudo: yes
+  tags:
+    - python
+
+- name: clean-up the downloaded Python archives
+  file: path={{ tianxun_user_home }}/{{ python_package_prefix }}{{ item }}{{ python_package_suffix }} state=absent
+  with_items: python_version
+  tags:
+    - python
+    - cleanup_python_downloads
+    - cleanup_downloads
+
+- name: clean-up the setuptools archives
+  file: path={{ item.path }} state=absent
+  with_items:
+    - { path: '{{ tianxun_user_home }}/{{ setuptools_package_name }}' }
+    - { path: '{{ tianxun_user_home }}/setuptools-{{ python_setuptools_version }}' }
+  tags:
+    - python
+    - cleanup_setuptools_downloads
+    - cleanup_downloads
+

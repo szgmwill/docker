@@ -1,0 +1,6 @@
+---
+# File:    server/roles/supervisor/defaults/main.yml
+# Purpose: default variable declarations for the supervisor role
+
+supervisor_python_version: 2.7.6
+supervisor_enable_web_interface: false

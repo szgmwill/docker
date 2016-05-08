@@ -1,0 +1,40 @@
+---
+# File:    roles/supervisor/tasks/SupervisorUninstall.yml
+# Purpose: tasks to execute a safe uninstall and cleanup of Supervisor from a host
+
+# includes
+- include_vars: "{{ item.file }}"
+  with_items:
+    - { file: '../vars/main.yml' }
+    - { file: '../../python/vars/main.yml' }
+    - { file: '../../consul_common/vars/main.yml' }
+  tags:
+    - uninstall_software
+    - uninstall_supervisor
+
+# tasks
+- name: shutdown Supervisor and all its managed processes
+  command: "{{ supervisorctl_bin }} -c {{ supervisor_config_dir }}/supervisord.conf shutdown removes={{ supervisor_pid_path }}"
+  tags:
+    - uninstall_software
+    - uninstall_supervisor
+    
+- name: delete the Supervisor config and logging directories
+  file: path={{ item.path }} state=absent
+  with_items:
+    - { path: '{{ tianxun_supervisor_dir }}' }
+    - { path: '{{ supervisor_logs }}' }
+  tags:
+    - uninstall_software
+    - uninstall_supervisor
+    
+- name: uninstall Supervisor and its dependencies from the filesystem
+  pip: executable={{ supervisor_python_bin }}/pip name={{ item.package }} state=absent
+  with_items:
+    - { package: 'supervisor' }
+    - { package: 'meld3' }
+    - { package: 'elementtree' }
+  tags:
+    - uninstall_software
+    - uninstall_supervisor
+    
