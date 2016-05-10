@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>优质博文集锦-云栖社区-阿里云 </title>
+    <meta name="keywords" content="云计算,java,前端交互,数据库,移动开发,大数据,算法,客户端,人工智能,机器学习,docker,spark"/>
+    <meta name="description" content="云栖社区是面向开发者的开放型技术平台。源自阿里云，服务于云计算技术全生态。包含博客、问答、培训、设计研发、资源下载等产品，以分享专业、优质、高效的技术为己任，帮助技术人快速成长与发展。">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=1100, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="csrf-param" content="yunqi_csrf"/>
+    <meta name="csrf-token" content="L8E23SCL9D"/>
+    <meta name="data-spm" content="5176"/>
+    <link rel="stylesheet" href="/assets/app-877188826fb2acef322aa029e338e004b483147e.css">
+    <script src="/assets/app-b24619cdc5da7ec3b26d2704aa8fdd693be3668f.js" data-main=""></script>
+    <script>require('main')</script>
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv-3.7.0.min.js"></script>
+    <script src="/js/respond-1.4.2.min.js"></script>
+    <![endif]-->
+    <style>
+   .aliyun>li>a{color:#fff !important;}
+   .navbar-nav>li>a{
+      font-size:16px;
+   }
+   .aliyun>li>a{
+      font-size:12px;
+   }
+   .nav>li>a {
+      display: inline-block;
+   }
+   .aliyun>li>a:hover,visited,active{
+      color:#00a2ca;
+      background-color:transparent!important;
+   }
+   .navbar-nav>li.divider{
+      margin-top:23px !important;
+   }
+   .dividera {
+      padding-top: 14px;
+      border-left: 1px #1aabcf solid;
+      margin-top: 8px;
+      display: inline-block;
+   }
+   .dividerb {
+      padding-top: 14px;
+      border-left: 1px #ddd solid;
+      margin-top: 5px;
+      display: inline-block;
+   }
+   header .index-nav {
+    margin-top: 35px;
+   }
+   .dropdown-menu {top:80% !important;}
+   .alert {margin-left: -15px;margin-right: -15px;}
+   .modal {
+    overflow-y: hidden;
+    top: 150px;
+    }
+    .modalcheckin {
+    overflow-y: hidden;
+    top: 20px;
+    }
+</style>
+  </head>
+  <body class="" data-spm="100239">
+<script type="text/javascript">
+(function (d) {
+var t=d.createElement("script");t.type="text/javascript";t.async=true;t.id="tb-beacon-aplus";
+t.setAttribute("exparams","category=&userid=&aplus&yunid=&yunpk=");
+t.src=("https:"==d.location.protocol?"https://s":"http://a")+".tbcdn.cn/s/aplus_v2.js";
+d.getElementsByTagName("head")[0].appendChild(t);
+})(document);
+</script>
+              <header>
+  <div style="height:30px;line-height:30px;background-color:#008EB7;color:#fff">
+    <div class="container">
+      <ul class="nav navbar-nav aliyun">
+          <li><a href="https://www.aliyun.com/" target="_blank">阿里云官网</a></li>
+      </ul>
+      <ul class="nav navbar-nav pull-right cnzz-event aliyun" id="index-right-nav">
+	  <li><a href="http://promotion.aliyun.com/tmsact/aliyun/2015/newbes.html" target="_blank">新手礼包</a></li>
+          <li class="dividera"></li>
+          <li><a href="http://home.console.aliyun.com/" target="_blank">管理控制台</a></li>
+          <li class="dividera"></li>
+	  <li><a href="http://help.aliyun.com" target="_blank">帮助与文档</a></li>
+          <li class="dividera"></li>
+	  <li><a href="http://beian.aliyun.com/" target="_blank">备案</a></li>
+          <li class="dividera"></li>
+	  <li><a href="http://wanwang.aliyun.com/" target="_blank">万网</a></li>
+	  <li class="dividera"></li>
+	  <li><a href="http://www.aliyun.com/app" target="_blank">手机APP</a></li>
+	  <li class="dividera"></li>
+	  <li><a href="https://mail.aliyun.com/" target="_blank">云邮箱</a></li>
+          
+      </ul>
+    </div>
+  </div>
+  <div class="navbar navbar-default"  style="min-height:60px;line-height:60px;">
+    <div class="container">
+        <ul class="nav navbar-nav">
+          <li><a href="/">社区首页</a></li>
+          <li><a href="/articles/?sort=top">博客</a></li>
+          <li><a href="/ask">问答</a></li>
+	  <li><a href="/edu/lesson/">云栖学院</a></li>
+	  <li><a href="https://bbs.aliyun.com" target="_blank">论坛</a></li>
+          <li class="divider"></li>
+          <li><a href="/groups/">圈子</a></li>
+          <li><a href="/teams/">公众号</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+          
+                    <li><a href="https://account.aliyun.com/login/login.htm?oauth_callback=https%3A%2F%2Fyq.aliyun.com%2Farticles%3Fdo%3Dlogin">登录</a></li>
+          <li class="divider"></li>
+          <li><a href="https://account.aliyun.com/register/register.htm?oauth_callback=https%3A%2F%2Fyq.aliyun.com%2Farticles%3Fdo%3Dlogin">注册</a></li>
+                    <li class="dropdown quick-search">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span></button>
+            <div class="dropdown-menu form-group" role="menu">
+              <form action="/search" method="get" class="quick-form js-active-on-valid">
+                    <input type="hidden" name="type" value="ARTICLE" />
+                    <input type="text" name="q" class="form-control" placeholder="全站搜索" required>
+                    <button type="submit" class="quick_btn"></button>
+              </form>
+            </div>
+          </li>
+        </ul>
+    </div>
+  </div>
+  
+    <div class="container" data-spm="yqblognav1">
+  <div class="navbar-header">
+    <a href="/articles/?sort=active" class="logo">云栖博客</a>
+  </div>
+  <form action="/search" method="get" class="navbar-form navbar-left js-active-on-valid">
+    <div class="form-group has-feedback search-group">
+        <input type="hidden" name="type" value="ARTICLE" />
+        <input type="text" name="q" class="form-control" placeholder="搜索文章名称" required>
+        <button class="glyphicon glyphicon-search form-control-feedback form-submit-btn"></button>
+    </div>
+  </form>
+  <ul class="list-inline pull-right">
+    <li><a href="/articles/new" class="btn btn-primary btn-lg">写博客</a></li>
+  </ul>
+</div>  </header>
+                <div class="container">
+          </div>
+    
+    <div class="container container-box">
+  <div class="row">
+    <div class="col-main" role="main" data-spm="yqblog1">
+      <ul class="nav nav-ata">
+                <li ><a href="/articles/?sort=top">精彩推荐</a></li>
+        <li ><a href="/articles/?sort=active">近期活跃</a></li>
+        <li ><a href="/articles/?sort=yuan">最新原创</a></li>
+        <li class="active"><a href="/articles/">全部</a></li>
+              </ul>
+
+      <div class="_articles-box">
+                <div class="text-right">
+          <div class="btn-group text-left _articles-order">
+            <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            按发表时间排序
+                            <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="/articles/?order=create_time">按发表时间排序</a></li>
+              <li><a href="/articles/?order=hitcount">按阅读数排序</a></li>
+              <li><a href="/articles/?order=comcount">按评论数排序</a></li>
+              <li><a href="/articles/?order=goodcount">按赞数排序</a></li>
+            </ul>
+          </div>
+        </div>
+                
+
+        <div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1955944310590453"><img src="http://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1955944310590453" class="username media-object">力强</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T23:01:30+08:00">2016-05-10 23:01:30</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41515" title="使用git checkout的方式进行轻量级部署">使用git checkout的方式进行轻量级部署</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1955944310590453" class="small">力强</a>
+        <span name="icon_1955944310590453" uid="1955944310590453" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+      <a href="/articles/tag_3616/" class="label label-ata">部署</a>    </div>
+
+    <div class="actions clearfix">
+      <span class="small">0人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1384833841157402"><img src="http://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_f2cce8f7c08c3bd1d16e760302e97237.png" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1384833841157402" class="username media-object">digoal</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T21:17:18+08:00">2016-05-10 21:17:18</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41514" title="PostgreSQL schema owner 的高危注意事项">PostgreSQL schema owner 的高危注意事项</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1384833841157402" class="small">digoal</a>
+        <span name="icon_1384833841157402" uid="1384833841157402" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+      <a href="/articles/tag_61/" class="label label-ata">PostgreSQL</a>    </div>
+
+    <div class="actions clearfix">
+      <span class="small">16人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1384833841157402"><img src="http://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_f2cce8f7c08c3bd1d16e760302e97237.png" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1384833841157402" class="username media-object">digoal</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T20:27:15+08:00">2016-05-10 20:27:15</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41513" title="PostgreSQL MySQL 兼容性之 - 读写用户的只读影子用户">PostgreSQL MySQL 兼容性之 - 读写用户的只读影子用户</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1384833841157402" class="small">digoal</a>
+        <span name="icon_1384833841157402" uid="1384833841157402" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+      <a href="/articles/tag_61/" class="label label-ata">PostgreSQL</a>    </div>
+
+    <div class="actions clearfix">
+      <span class="small">14人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1384833841157402"><img src="http://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_f2cce8f7c08c3bd1d16e760302e97237.png" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1384833841157402" class="username media-object">digoal</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T20:02:27+08:00">2016-05-10 20:02:27</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41512" title="PostgreSQL 批量权限 管理方法">PostgreSQL 批量权限 管理方法</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1384833841157402" class="small">digoal</a>
+        <span name="icon_1384833841157402" uid="1384833841157402" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+      <a href="/articles/tag_61/" class="label label-ata">PostgreSQL</a>    </div>
+
+    <div class="actions clearfix">
+      <span class="small">17人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:05:50+08:00">2016-05-10 18:05:50</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41511" title="Centos下修改启动项和网络配置">Centos下修改启动项和网络配置</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">8人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:05:32+08:00">2016-05-10 18:05:32</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41510" title="Centos下配置单元测试工具gtest">Centos下配置单元测试工具gtest</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">8人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:05:10+08:00">2016-05-10 18:05:10</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41509" title="Centos配置为驱动程序开发环境">Centos配置为驱动程序开发环境</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">7人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:04:47+08:00">2016-05-10 18:04:47</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41508" title="Centos安装gcc及g++">Centos安装gcc及g++</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">7人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:04:30+08:00">2016-05-10 18:04:30</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41507" title="C语言综合实验3—计算器四则运算">C语言综合实验3—计算器四则运算</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">7人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:04:00+08:00">2016-05-10 18:04:00</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41506" title="C语言参考程序—无符号一位整数的四则运算">C语言参考程序—无符号一位整数的四则运算</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">7人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:03:39+08:00">2016-05-10 18:03:39</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41505" title="C语言综合实验2—长整数运算">C语言综合实验2—长整数运算</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">9人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:03:09+08:00">2016-05-10 18:03:09</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41504" title="C语言综合实验1—学生信息管理系统">C语言综合实验1—学生信息管理系统</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">7人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:02:28+08:00">2016-05-10 18:02:28</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41503" title="[总结]C语言二维数组作为函数的参数">[总结]C语言二维数组作为函数的参数</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">8人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:02:05+08:00">2016-05-10 18:02:05</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41502" title="递归与尾递归总结">递归与尾递归总结</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">6人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:01:32+08:00">2016-05-10 18:01:32</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41501" title="数组的连续最大子段和">数组的连续最大子段和</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">4人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:00:58+08:00">2016-05-10 18:00:58</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41500" title="模板类中定义list&lt;T&gt;::iterator iter在g++下不识别的解决办法">模板类中定义list&lt;T&gt;::iterator iter在g++下不识别的解决办法</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">4人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:00:23+08:00">2016-05-10 18:00:23</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41499" title="System V 共享内存区">System V 共享内存区</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">4人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T18:00:01+08:00">2016-05-10 18:00:01</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41498" title="Posix共享内存区">Posix共享内存区</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">4人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T17:59:37+08:00">2016-05-10 17:59:37</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41497" title="共享内存">共享内存</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">5人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="media _articles-item">
+  <div class="pull-left hidden-xs">
+    <a href="/users/1133162409019711"><img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/avatar3.jpg" width="42" height="42" alt="" class="media-object img-user"></a>
+    <!-- <a href="/users/1133162409019711" class="username media-object">anker_rabbit</a> -->
+  </div>
+  <div class="media-body _articles-item-body">
+    <h2 class="media-heading clearfix media">
+            <span class="pull-right">
+        <time class="small js-relative-time" datetime="2016-05-10T17:59:09+08:00">2016-05-10 17:59:09</time>
+      </span>
+            <div class="media-body text-overflow">
+        <a href="/articles/41496" title="System V 信号量">System V 信号量</a>      
+      </div>
+    </h2>
+    <div class="infos">
+      <span class="small">
+        作者: <a href="/users/1133162409019711" class="small">anker_rabbit</a>
+        <span name="icon_1133162409019711" uid="1133162409019711" size="middle" style="position:relative;bottom: 1px;"></span>
+      </span>
+    </div>
+    <div class="tags">
+          </div>
+
+    <div class="actions clearfix">
+      <span class="small">6人浏览</span>
+      <span class="small">0人评论</span>
+      <span class="small">0人赞</span>
+      <span class="small">0人关注</span>
+      <div class="pull-right">
+              </div>
+          </div>
+  </div>
+</div>
+<div class="_articles-others text-center">
+    
+  <ul class="pagination pagination-lg">
+    <li class="disabled"><span>◀</span></li>
+    
+  
+  <li class="active"><span>1</span></li>
+  
+          <li><a href="/articles?order=create_time&amp;p=2" >2</a></li>
+        <li><a href="/articles?order=create_time&amp;p=3" >3</a></li>
+        <li class="disabled"><span>…</span></li>
+        <li><a href="/articles?order=create_time&amp;p=1963" >1963</a></li>
+        <li><a href="/articles?order=create_time&amp;p=1964" >1964</a></li>
+      
+   
+  <li><a href="/articles?order=create_time&amp;p=2" rel="next" >▶</a></li>
+  </ul>
+
+</div>
+      </div><!-- /.articles -->
+    </div><!-- /main -->
+
+    <aside class="col-side">
+      <div class="_articles-side" data-spm="yqblog2">
+        <section class="_articles-side-box">
+                <h3 class="heading">推荐博主</h3>
+                        <div class="_teams-item" style="padding: 0 0 15px 0;border-bottom:0px">
+          <div class="media">
+            <a href="/users/1384833841157402" class="pull-left">
+              <img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_fa1484516f9afc405a10239f1f538f5b.png" width="38" height="38" alt="" class="img-user" border="0" />
+            </a>
+            <div class="media-body">
+              <div class="pull-left">
+                <div class="media-heading clearfix rec-user-name">
+                  <a href="/users/1384833841157402" class="rec-user-a" style="font-size:16px">digoal</a>
+                  <span name="icon_1384833841157402" uid="1384833841157402" size="middle" style="position:relative;bottom: 1px;"></span>
+                </div>
+                <div class="_teams-item-info">
+                	               <div>阿里巴巴PostgreSQL专家</div>
+                                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                <div class="_teams-item" style="padding: 0 0 15px 0;border-bottom:0px">
+          <div class="media">
+            <a href="/users/1030781208994426" class="pull-left">
+              <img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_cb41e6b6aefe1a97addcc26e9a892859.jpg" width="38" height="38" alt="" class="img-user" border="0" />
+            </a>
+            <div class="media-body">
+              <div class="pull-left">
+                <div class="media-heading clearfix rec-user-name">
+                  <a href="/users/1030781208994426" class="rec-user-a" style="font-size:16px">荣华</a>
+                  <span name="icon_1030781208994426" uid="1030781208994426" size="middle" style="position:relative;bottom: 1px;"></span>
+                </div>
+                <div class="_teams-item-info">
+                	               <div>阿里巴巴跨境B2C应用架构师</div>
+                                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                <div class="_teams-item" style="padding: 0 0 15px 0;border-bottom:0px">
+          <div class="media">
+            <a href="/users/1029214408901604" class="pull-left">
+              <img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_8bf9777832499792136b38cb54fe8973.png" width="38" height="38" alt="" class="img-user" border="0" />
+            </a>
+            <div class="media-body">
+              <div class="pull-left">
+                <div class="media-heading clearfix rec-user-name">
+                  <a href="/users/1029214408901604" class="rec-user-a" style="font-size:16px">丁奇</a>
+                  <span name="icon_1029214408901604" uid="1029214408901604" size="middle" style="position:relative;bottom: 1px;"></span>
+                </div>
+                <div class="_teams-item-info">
+                	               <div title="阿里数据专家，专注于数据存储系统、MySQL源码">阿里数据专家，专注于数据存储系统、MyS…</div>
+                                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                <div class="_teams-item" style="padding: 0 0 15px 0;border-bottom:0px">
+          <div class="media">
+            <a href="/users/1530701787417218" class="pull-left">
+              <img src="https://oss-cn-hangzhou.aliyuncs.com/yqfiles/img_b550e55628dda7dcdefa3d9404c41551.png" width="38" height="38" alt="" class="img-user" border="0" />
+            </a>
+            <div class="media-body">
+              <div class="pull-left">
+                <div class="media-heading clearfix rec-user-name">
+                  <a href="/users/1530701787417218" class="rec-user-a" style="font-size:16px">uyang</a>
+                  <span name="icon_1530701787417218" uid="1530701787417218" size="middle" style="position:relative;bottom: 1px;"></span>
+                </div>
+                <div class="_teams-item-info">
+                	               <div title="青霖，阿里架构专家，专注Java核心技术,架构,数据存储与数据库,分布式系统与计算,开发框架与中间件等">青霖，阿里架构专家，专注Java核心技术…</div>
+                                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                  <h3 class="heading">热门标签</h3>
+          <div>
+            <a href="/articles/tag_60/?" class="label label-ata ">云存储技术</a><a href="/articles/tag_44/?" class="label label-ata ">html5</a><a href="/articles/tag_43/?" class="label label-ata ">css</a><a href="/articles/tag_42/?" class="label label-ata ">javascript</a><a href="/articles/tag_41/?" class="label label-ata ">java</a><a href="/articles/tag_39/?" class="label label-ata ">分布式系统与计算</a><a href="/articles/tag_38/?" class="label label-ata ">开发框架与中间件</a><a href="/articles/tag_37/?" class="label label-ata ">算法</a><a href="/articles/tag_36/?" class="label label-ata ">架构</a><a href="/articles/tag_35/?" class="label label-ata ">测试技术</a><a href="/articles/tag_34/?" class="label label-ata ">前端与交互设计</a><a href="/articles/tag_33/?" class="label label-ata ">Java核心技术</a><a href="/articles/tag_32/?" class="label label-ata ">redis</a><a href="/articles/tag_45/?" class="label label-ata ">native</a><a href="/articles/tag_46/?" class="label label-ata ">react</a><a href="/articles/tag_47/?" class="label label-ata ">监控</a><a href="/articles/tag_59/?" class="label label-ata ">引擎技术</a><a href="/articles/tag_58/?" class="label label-ata ">原创</a><a href="/articles/tag_57/?" class="label label-ata ">gc</a><a href="/articles/tag_56/?" class="label label-ata ">jvm</a><a href="/articles/tag_55/?" class="label label-ata ">混合式开发</a><a href="/articles/tag_54/?" class="label label-ata ">hybird</a><a href="/articles/tag_53/?" class="label label-ata ">无线</a><a href="/articles/tag_52/?" class="label label-ata ">性能优化</a><a href="/articles/tag_51/?" class="label label-ata ">主动校验</a><a href="/articles/tag_50/?" class="label label-ata ">棱镜</a><a href="/articles/tag_49/?" class="label label-ata ">实时系统</a><a href="/articles/tag_48/?" class="label label-ata ">storm</a><a href="/articles/tag_31/?" class="label label-ata ">android</a><a href="/articles/tag_30/?" class="label label-ata ">后门</a><a href="/articles/tag_29/?" class="label label-ata ">网络安全</a><a href="/articles/tag_13/?" class="label label-ata ">互联网产品及应用</a><a href="/articles/tag_12/?" class="label label-ata ">llvm</a><a href="/articles/tag_11/?" class="label label-ata ">ios</a><a href="/articles/tag_10/?" class="label label-ata ">linux</a><a href="/articles/tag_9/?" class="label label-ata ">网络与数据通信</a><a href="/articles/tag_8/?" class="label label-ata ">移动开发与客户端</a><a href="/articles/tag_7/?" class="label label-ata ">系统研发与运维</a><a href="/articles/tag_6/?" class="label label-ata ">数据存储与数据库</a><a href="/articles/tag_5/?" class="label label-ata ">编程语言</a><a href="/articles/tag_4/?" class="label label-ata ">系统软件</a><a href="/articles/tag_3/?" class="label label-ata ">安全与风控</a><a href="/articles/tag_2/?" class="label label-ata ">nginx</a><a href="/articles/tag_14/?" class="label label-ata ">python</a><a href="/articles/tag_15/?" class="label label-ata ">php</a><a href="/articles/tag_16/?" class="label label-ata ">深度学习</a><a href="/articles/tag_28/?" class="label label-ata ">安全</a><a href="/articles/tag_27/?" class="label label-ata ">信息检索算法/实践</a><a href="/articles/tag_26/?" class="label label-ata ">定位原理/算法</a><a href="/articles/tag_25/?" class="label label-ata ">空间索引原理</a><a href="/articles/tag_24/?" class="label label-ata ">大数据</a><a href="/articles/tag_23/?" class="label label-ata ">LBS</a><a href="/articles/tag_22/?" class="label label-ata ">消息系统</a><a href="/articles/tag_21/?" class="label label-ata ">分布式</a><a href="/articles/tag_20/?" class="label label-ata ">故障方案</a><a href="/articles/tag_19/?" class="label label-ata ">RPC</a><a href="/articles/tag_18/?" class="label label-ata ">faq</a><a href="/articles/tag_17/?" class="label label-ata ">帮助</a><a href="/articles/tag_1/?" class="label label-ata ">云栖社区</a>          </div>
+        </section>
+      </div>
+    </aside>
+  </div><!-- /.row -->
+</div><!-- /.container -->
+        <footer class="footer" role="contentinfo">
+	<div class="container text-center">
+	  <p class="big">
+	    <a href="//www.aliyun.com/about" target="_blank">关于我们</a>
+	    <a href="//www.aliyun.com/law" target="_blank">法律声明</a>
+	    <a href="http://jubao.alibaba.com/internet/readme.htm" target="_blank">廉正举报</a>
+	    <a href="//www.aliyun.com/jubao" target="_blank">互联网不良信息举报</a>
+	    <a href="//www.aliyun.com/links" target="_blank">友情链接</a>
+	  </p>
+	  <p class="link-wrap">
+	    <a class="link-item" href="http://www.alibabagroup.com/cn/global/home" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8001">阿里巴巴集团</a>
+	    <a class="link-item" href="//www.taobao.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8002">淘宝网</a>
+	    <a class="link-item" href="//www.tmall.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8003">天猫</a>
+	    <a class="link-item" href="//ju.taobao.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8004">聚划算</a>
+	    <a class="link-item" href="http://www.aliexpress.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8005">全球速卖通</a>
+	    <a class="link-item" href="http://www.alibaba.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8006">阿里巴巴国际交易市场</a>
+	    <a class="link-item" href="http://www.1688.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8007">1688</a>
+	    <a class="link-item" href="http://www.alimama.com/index.htm" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8008">阿里妈妈</a>
+	    <a class="link-item" href="//www.alitrip.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8009">阿里旅行・去啊</a>
+	    <a class="link-item" href="http://www.aliyun.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8010">阿里云计算</a>
+	    <a class="link-item" href="http://www.yunos.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8011">YunOS</a>
+	    <a class="link-item" href="//aliqin.tmall.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8012">阿里通信</a>
+	    <a class="link-item" href="http://wanwang.aliyun.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8013">万网</a>
+	    <a class="link-item" href="http://www.autonavi.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8014">高德</a>
+	    <a class="link-item" href="http://www.uc.cn/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8015">UC</a>
+	    <a class="link-item" href="http://www.umeng.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8016">友盟</a>
+	    <a class="link-item" href="http://www.xiami.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8018">虾米</a>
+	    <a class="link-item" href="http://www.ttpod.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8019">天天动听</a>
+	    <a class="link-item" href="http://www.laiwang.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8020">来往</a>
+	    <a class="link-item" href="http://www.dingtalk.com/?lwfrom=20150205111943449" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8021">钉钉</a>
+	    <a class="link-item" href="https://www.alipay.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8023">支付宝</a>
+	  </p>
+	  <p>
+	    © 2009-2015 Aliyun.com 版权所有 ICP证：浙B2-20080101
+	  </p>
+	  <p>
+	    <a href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010800001867" target="_blank" data-spm-click="gostr=/aliyun;locaid=d3338">
+	      <img src="//gtms02.alicdn.com/tps/i2/TB1dG7pJXXXXXXCXVXXiC47GVXX-44-44.png" style="display:inline-block;width: 22px;">
+	    </a>
+	    <a href="http://www.aliyun.com/djcp" target="_blank">
+	      <img src="//gtms03.alicdn.com/tps/i3/TB18_.kJXXXXXcOXVXXiC47GVXX-44-44.png" style="display:inline-block;width: 22px;">
+	    </a>
+	  </p>
+	</div>
+</footer>
+          <div id="modal-rss-subsribe" class="modal fade" role="dialog" aria-labelledby="rss-subscribe" aria-hidden="true">
+  <div class="modal-dialog">
+    <form data-remote="true" data-done="$(this).closest('.modal').modal('hide');" class="js-active-on-valid" novalidate>
+    <input type="hidden" name="yunqi_csrf" value="L8E23SCL9D">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">RSS订阅·</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          订阅地址：<input style="width:400px;" type="text" value="https://yq.aliyun.com" readonly />
+          <div class="btn btn-primary" onclick="copyToClipboard('https://yq.aliyun.com')">复制</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div><!-- /#modal-share -->
+<script>
+function copyToClipboard(text) {
+    window.prompt("复制到剪贴板: 请按Ctrl+C，然后回车", text);
+}
+</script>
+    
+      <script>require('module/relative-time')</script>
+  <script src="/assets/getIcons.js"></script>
+    <a href="#" class="go-top" style="display:none"><span class="glyphicon glyphicon-arrow-up"></span></a>
+<script>require('module/go-top')</script>        <div style="position:fixed;right:30px;bottom:76px;display: none;" id="yqmob">
+<div style="padding: 8px; background-color: #fff; border:1px solid #ccc;">
+<img src="//yqfiles.oss-cn-hangzhou.aliyuncs.com/images/yunqi.png" style="width: 120px;" />
+<div style="text-align: center;padding-top: 10px;">手机扫描访问社区</div>
+</div>
+</div>
+
+<div style="position:fixed;right:0;bottom:210px;">
+<div style="float: left;cursor: pointer;" onmouseover="$('#yqmob').show();" onmouseout="$('#yqmob').hide();">
+<img src="//yqfiles.oss-cn-hangzhou.aliyuncs.com/images/icon_mobileweb.png" alt="手机访问云栖社区">
+</div>
+</div>
+
+<div>
+<a href="mailto:zhaoyunqi@list.alibaba-inc.com" target="_blank" title="为云栖社区提供反馈" style="position:fixed;right:0;bottom:100px;" class="hidden-xs">
+  <img src="//yqfiles.oss-cn-hangzhou.aliyuncs.com/images/go-top.png" alt="">
+</a>
+</div>        <script type="text/javascript">
+    $('.form-submit-btn').click(function(){
+      var form = $(this).parents('form');
+      form.find('input').focus();
+      form.submit();
+      console.log(2);
+    });
+    //导航 dropdown
+    (function(){
+    var t;
+    $('.dropdown').hover(function(){
+      var that = $(this);
+      that.siblings().find('.dropdown-menu').hide();
+      that.children('.dropdown-menu').show();
+      clearTimeout(t);
+    }, function(){
+      var that = $(this);
+      t = setTimeout(function(){
+        that.children('.dropdown-menu').hide();
+      }, 500)
+      
+    })
+    }())
+    </script>
+        <script src='//w.cnzz.com/c.php?id=1256835944' language='JavaScript'></script>
+    <script src='//w.cnzz.com/c.php?id=1256757167' language='JavaScript'></script>
+    <script src="https://g.alicdn.com/??aliyun/www-dpl/0.5.12/knight/js/data-statistics.js"></script>
+<script src="//g.alicdn.com/aliyun/aliyun-common/0.0.32/js/criteo/criteo.js"></script><script type="text/javascript">
+window.criteo_q = window.criteo_q || [];
+window.criteo_q.push(
+        { event: "setAccount", account: 19037 },
+        { event: "setSiteType", type: "d" },
+        { event: "viewHome" }
+);
+</script>
+      </body>
+</html>
