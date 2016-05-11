@@ -7,7 +7,7 @@ ENV user will
 
 RUN yum -y update && \
     yum -y install wget tar && \
-    yum -y gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre-devel
+    yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre-devel
 
 RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
