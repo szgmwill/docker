@@ -16,10 +16,10 @@ RUN mkdir -p /home/temp && \
     wget http://nginx.org/download/nginx-1.6.0.tar.gz && \
     tar -zxvf nginx-1.6.0.tar.gz && \
     cd nginx-1.6.0 && \
-    ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx--conf-path=/etc/nginx/nginx.conf && \
-    --error-log-path=/var/log/nginx/error.log && \
-    --http-log-path=/var/log/nginx/access.log && \
-    --pid-path=/var/log/nginx/nginx.pid && \
+    ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --http-log-path=/var/log/nginx/access.log \
+    --pid-path=/var/log/nginx/nginx.pid \
     --lock-path=/var/log/nginx/nginx.lock && \
     make && make install  && \
     mkdir -p /etc/nginx/conf.d
